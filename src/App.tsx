@@ -1,12 +1,12 @@
 
-import { Button } from './components/ui/button'
+import { ModeToggle } from './components/mode-toggle'
 
 function App() {
   
 
   return (
     <>
-      <Button>Click me</Button>
+      <ModeToggle/>
     </>
   )
 }
