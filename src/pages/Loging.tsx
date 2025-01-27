@@ -8,6 +8,8 @@ import { Input } from '../components/ui/input'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form'
 import { Checkbox } from '../components/ui/checkbox'
+import { useLoginMutation } from '../redux/features/auth/authApi'
+import { useAppDispatch } from '../redux/hooks'
 
 const formSchema = z.object({
   email: z.string().email({
@@ -20,7 +22,9 @@ const formSchema = z.object({
 })
 
 export function LoginPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [login] = useLoginMutation();
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
