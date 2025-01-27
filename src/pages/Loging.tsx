@@ -10,6 +10,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '../components/ui/checkbox'
 import { useLoginMutation } from '../redux/features/auth/authApi'
 import { useAppDispatch } from '../redux/hooks'
+import { toast } from 'sonner'
+import { verifyToken } from '../utils/function/verifyToken'
+import { setUser, TUser } from '../redux/features/auth/authSlice'
 
 const formSchema = z.object({
   email: z.string().email({
@@ -37,11 +40,25 @@ export function LoginPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const toastId = toast.loading("logging in..,")
     setIsLoading(true)
     // Here you would typically send the form data to your backend
-    console.log(values)
+    try{
+      const userInfo = {
+        email:values.email,
+        password:values.password
+      }
+      const res = await login(userInfo).unwrap();
+      const user = verifyToken(res.data.token) as TUser;
+      dispatch(setUser({user,token:res.data.token}));
+      toast.success("Login Successful",{id:toastId,duration:2000});
+      navigate('/')
+    }catch(error){{
+      toast.error("Something want wrong",{id:toastId,duration:2000})
+      console.log(error);
+    }}
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await login
     setIsLoading(false)
     // Redirect to home page or dashboard after successful login
     navigate('/')
