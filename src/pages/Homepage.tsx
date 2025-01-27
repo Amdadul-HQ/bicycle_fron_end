@@ -1,9 +1,12 @@
+import BannerSection from "../components/section/BannerSection";
+import FeatureSection from "../components/section/FeatureSection";
 
 const Homepage = () => {
     return (
-        <section>
-            <h1>Hello From Home page</h1>
-        </section>
+        <>
+         <BannerSection/>  
+         <FeatureSection/>
+        </>
     );
 };
 
