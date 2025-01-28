@@ -46,6 +46,7 @@ export function SignUpPage() {
     // Here you would typically send the form data to your backend
     try{
     const userInfo = {
+      name:values.name,
       email:values.email,
       password:values.password
     }
