@@ -1,7 +1,7 @@
 import type React from "react"
 import { useState } from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../components/ui/table"
-import { Button } from "../../components/ui/button"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
+import { Button } from "../../../components/ui/button"
 
 interface User {
   id: number

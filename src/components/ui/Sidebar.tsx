@@ -1,57 +1,118 @@
-import type React from "react"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Users, ShoppingBag, ClipboardList, BarChart2 } from "lucide-react"
-import { cn } from "../../lib/utils"
-import { Button } from "./button"
+import React, { useEffect, useState } from 'react'
+import { Users, ShoppingBag, ClipboardList, BarChart2, Menu, X, Moon, Sun, LogOut, User } from 'lucide-react'
+import { Button } from './button'
+import { cn } from '../../lib/utils'
+import { Link } from 'react-router-dom'
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  setActiveTab: (tab: string) => void
-  activeTab: string
-}
 
-export function Sidebar({ className, setActiveTab, activeTab }: SidebarProps) {
+
+export function Sidebar() {
+    const [isCollapsed, setIsCollapsed] = React.useState(false)
+    const [theme, setTheme] = useState<"light" | "dark">("light")
+  
+    useEffect(() => {
+      const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
+      if (savedTheme) {
+        setTheme(savedTheme)
+      } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        setTheme("dark")
+      }
+    }, [])
+  
+    useEffect(() => {
+      document.documentElement.classList.toggle("dark", theme === "dark")
+      localStorage.setItem("theme", theme)
+    }, [theme])
+  
+    const toggleTheme = () => {
+      setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"))
+    }
+
   return (
-    <div className={cn("pb-12 w-64", className)}>
+    <div className={cn(
+      "relative pb-12 border-r transition-all duration-300 ease-in-out",
+      isCollapsed ? "w-16" : "w-64",
+    )}>
+      <Button
+        variant="ghost"
+        className="absolute right-[18px] top-2 p-2 rounded-full"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+      >
+        {isCollapsed ? <Menu size={20} /> : <X size={20} />}
+      </Button>
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Admin Dashboard</h2>
+          <h2 className={cn(
+            "mb-2 px-4 text-lg font-semibold tracking-tight transition-all duration-300 ease-in-out",
+            isCollapsed && "opacity-0"
+          )}>
+            Admin Dashboard
+          </h2>
           <div className="space-y-1">
+            {/* Admin routes */}
             <Button
-              variant={activeTab === "users" ? "secondary" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("users")}
+               asChild variant="ghost" className="w-full justify-start"
             >
-              <Users className="mr-2 h-4 w-4" />
-              Users
+                <Link to='/dashboard/analytics'>
+                    <BarChart2 className="mr-2 h-4 w-4" />
+                    {!isCollapsed && "Analytics"}
+                </Link>
             </Button>
             <Button
-              variant={activeTab === "products" ? "secondary" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("products")}
+               asChild variant="ghost" className="w-full justify-start"
             >
-              <ShoppingBag className="mr-2 h-4 w-4" />
-              Products
+                <Link to="/dashboard/users">
+                    <Users className="mr-2 h-4 w-4" />
+                    {!isCollapsed && "Users"}
+                </Link>
             </Button>
             <Button
-              variant={activeTab === "orders" ? "secondary" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("orders")}
+               asChild variant="ghost" className="w-full justify-start"
             >
-              <ClipboardList className="mr-2 h-4 w-4" />
-              Orders
+                <Link to="/dashboard/products">
+                    <ShoppingBag className="mr-2 h-4 w-4" />
+                    {!isCollapsed && "Products"}
+                </Link>
             </Button>
-            <Button
-              variant={activeTab === "analytics" ? "secondary" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("analytics")}
+            <Button asChild variant="ghost" className="w-full justify-start"
             >
-              <BarChart2 className="mr-2 h-4 w-4" />
-              Analytics
+                <Link to="/dashboard/orders">
+                <ClipboardList className="mr-2 h-4 w-4" />
+                {!isCollapsed && "Orders"}
+                </Link>
+            </Button>
+            {/* customer routes */}
+            <Button asChild variant="ghost" className="w-full justify-start">
+              <Link to="/dashboard/all-orders">
+                <ShoppingBag className="mr-2 h-4 w-4" />
+                {!isCollapsed && "View Orders"}
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" className="w-full justify-start">
+              <Link to="/dashboard/profile">
+                <User className="mr-2 h-4 w-4" />
+                {!isCollapsed && "Manage Profile"}
+              </Link>
             </Button>
           </div>
         </div>
       </div>
+      <div className={cn(
+        "absolute bottom-4 left-4 transition-all duration-300 ease-in-out",
+        isCollapsed && "left-2"
+      )}>
+        <Button variant="ghost" size="icon" onClick={toggleTheme}>
+            {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+            <span className="sr-only">Toggle theme</span>
+          </Button>
+        <Button variant="ghost"
+              className="w-full"
+            //   onClick={() => setActiveTab("orders")}
+            >
+               <LogOut className="h-4 w-4" />
+              {!isCollapsed && "Logout"}
+            </Button>
+      </div>
     </div>
   )
 }
-

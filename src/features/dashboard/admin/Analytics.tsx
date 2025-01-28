@@ -1,6 +1,6 @@
 import type React from "react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 
 const data = [
   { name: "Jan", revenue: 4000 },
