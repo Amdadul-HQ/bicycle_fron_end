@@ -5,6 +5,8 @@ import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "./ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -59,6 +61,39 @@ export function Navbar() {
           <Button asChild>
             <Link to="/signup">Sign Up</Link>
           </Button>
+          <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src="/placeholder-avatar.jpg"  />
+                <AvatarFallback>
+                  {/* {user?.name.charAt(0)} */}
+                  </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">
+                  {/* {user?.name} */}
+                  </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {/* {user?.email} */}
+                  </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>
+              <Link to='/dashboard'>
+               Go to Dashboard
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem 
+            // onClick={handleLogout}
+            >Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
