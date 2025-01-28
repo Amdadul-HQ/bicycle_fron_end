@@ -7,6 +7,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "../components/ui/button"
 import { Input } from "../components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../components/ui/form"
+import { useSignupMutation } from "../redux/features/auth/authApi"
+import { useAppDispatch } from "../redux/hooks"
+import { toast } from "sonner"
+import { verifyToken } from "../utils/function/verifyToken"
+import { setUser, TUser } from "../redux/features/auth/authSlice"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -23,6 +28,8 @@ const formSchema = z.object({
 export function SignUpPage() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useAppDispatch();
+  const [signup] = useSignupMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,13 +42,25 @@ export function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
+    const toastId = toast.loading("logging in..,")
     // Here you would typically send the form data to your backend
-    console.log(values)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try{
+    const userInfo = {
+      email:values.email,
+      password:values.password
+    }
+    const res = await signup(userInfo).unwrap();
+    const user = verifyToken(res.data.token) as TUser;
+    dispatch(setUser({user,token:res.data.token}));
+    toast.success("Login Successful",{id:toastId,duration:2000});
+    navigate('/')
+    }catch(error){{
+      toast.error("Something want wrong",{id:toastId,duration:2000})
+      console.log(error);
+    }}
     setIsLoading(false)
-    // Redirect to home page or dashboard after successful sign up
-    navigate("/")
+    // Redirect to home page or dashboard after successful login
+    navigate('/')
   }
 
   return (

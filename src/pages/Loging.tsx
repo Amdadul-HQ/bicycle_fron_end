@@ -26,8 +26,8 @@ const formSchema = z.object({
 
 export function LoginPage() {
   const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-    const [login] = useLoginMutation();
+  const dispatch = useAppDispatch();
+  const [login] = useLoginMutation();
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,8 +40,8 @@ export function LoginPage() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const toastId = toast.loading("logging in..,")
     setIsLoading(true)
+    const toastId = toast.loading("logging in..,")
     // Here you would typically send the form data to your backend
     try{
       const userInfo = {
@@ -57,8 +57,6 @@ export function LoginPage() {
       toast.error("Something want wrong",{id:toastId,duration:2000})
       console.log(error);
     }}
-    // Simulate API call
-    await login
     setIsLoading(false)
     // Redirect to home page or dashboard after successful login
     navigate('/')
