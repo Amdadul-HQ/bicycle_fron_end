@@ -1,12 +1,11 @@
-"use client"
-
 import { Menu, Sun, Moon } from "lucide-react"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Button } from "./ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
+import { selectCurrentUser } from "../redux/features/auth/authSlice"
+import { useAppSelector } from "../redux/hooks"
+import NavbarProfileDropDown from "./ui/NavbarProfileDropDown"
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -18,6 +17,8 @@ const navItems = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [theme, setTheme] = useState<"light" | "dark">("light")
+  const user = useAppSelector(selectCurrentUser);
+  
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
@@ -55,45 +56,19 @@ export function Navbar() {
             {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
-          <Button variant="ghost" asChild>
-            <Link to="/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link to="/signup">Sign Up</Link>
-          </Button>
-          <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="/placeholder-avatar.jpg"  />
-                <AvatarFallback>
-                  {/* {user?.name.charAt(0)} */}
-                  </AvatarFallback>
-              </Avatar>
+          {
+            !user && <>
+              <Button variant="ghost" asChild>
+              <Link to="/login">Login</Link>
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end" forceMount>
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {/* {user?.name} */}
-                  </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {/* {user?.email} */}
-                  </p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to='/dashboard'>
-               Go to Dashboard
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem 
-            // onClick={handleLogout}
-            >Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <Button asChild>
+              <Link to="/signup">Sign Up</Link>
+            </Button>
+            </>
+          }
+          {
+            user && <NavbarProfileDropDown/>
+          }
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>

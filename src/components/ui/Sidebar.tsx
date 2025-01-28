@@ -3,12 +3,18 @@ import { Users, ShoppingBag, ClipboardList, BarChart2, Menu, X, Moon, Sun, LogOu
 import { Button } from './button'
 import { cn } from '../../lib/utils'
 import { Link } from 'react-router-dom'
+import { useAppDispatch } from '../../redux/hooks'
+import { logOut } from '../../redux/features/auth/authSlice'
 
 
 
 export function Sidebar() {
     const [isCollapsed, setIsCollapsed] = React.useState(false)
     const [theme, setTheme] = useState<"light" | "dark">("light")
+    const dispatch = useAppDispatch();
+    const handleLogout = () =>{
+      dispatch(logOut())
+    }
   
     useEffect(() => {
       const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null
@@ -107,7 +113,7 @@ export function Sidebar() {
           </Button>
         <Button variant="ghost"
               className="w-full"
-            //   onClick={() => setActiveTab("orders")}
+              onClick={handleLogout}
             >
                <LogOut className="h-4 w-4" />
               {!isCollapsed && "Logout"}

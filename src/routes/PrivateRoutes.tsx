@@ -15,7 +15,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRol
   }
 
   if (!allowedRoles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />
+    return <Navigate to="/" replace />
   }
 
   return <>{children}</>
