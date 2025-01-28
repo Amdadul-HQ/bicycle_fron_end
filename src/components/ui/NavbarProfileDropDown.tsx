@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { useAppDispatch } from "../../redux/hooks";
 import { logOut } from "../../redux/features/auth/authSlice";
 
-const NavbarProfileDropDown = () => {
+const NavbarProfileDropDown = ({user}) => {
     const dispatch = useAppDispatch();
       const handleLogout = () =>{
             dispatch(logOut())
@@ -29,13 +29,13 @@ const NavbarProfileDropDown = () => {
                     {/* {user?.name} */}
                     </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    {/* {user?.email} */}
+                    {user?.email}
                     </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to='/dashboard'>
+                <Link to={`/dashboard/${user.role=== 'customer' &&'profile'}`}>
                  Go to Dashboard
                 </Link>
               </DropdownMenuItem>

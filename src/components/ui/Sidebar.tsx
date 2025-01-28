@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { Users, ShoppingBag, ClipboardList, BarChart2, Menu, X, Moon, Sun, LogOut, User } from 'lucide-react'
+import { Menu, X, Moon, Sun, LogOut } from 'lucide-react'
 import { Button } from './button'
 import { cn } from '../../lib/utils'
-import { Link } from 'react-router-dom'
-import { useAppDispatch } from '../../redux/hooks'
-import { logOut } from '../../redux/features/auth/authSlice'
-
-
+import { useAppDispatch, useAppSelector } from '../../redux/hooks'
+import { logOut, selectCurrentUser } from '../../redux/features/auth/authSlice'
+import AdminDashboardLinks from './AdminDashboardLinks'
+import CustomerDashboardLinks from './CustomerDashboardLinks'
+import { useNavigate } from 'react-router-dom'
 
 export function Sidebar() {
     const [isCollapsed, setIsCollapsed] = React.useState(false)
     const [theme, setTheme] = useState<"light" | "dark">("light")
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const user = useAppSelector(selectCurrentUser);
     const handleLogout = () =>{
       dispatch(logOut())
+      navigate('/')
     }
   
     useEffect(() => {
@@ -23,7 +26,10 @@ export function Sidebar() {
       } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         setTheme("dark")
       }
-    }, [])
+      if(!user){
+        navigate('/')
+      }
+    }, [navigate, user])
   
     useEffect(() => {
       document.documentElement.classList.toggle("dark", theme === "dark")
@@ -52,54 +58,17 @@ export function Sidebar() {
             "mb-2 px-4 text-lg font-semibold tracking-tight transition-all duration-300 ease-in-out",
             isCollapsed && "opacity-0"
           )}>
-            Admin Dashboard
+            {user?.role} Dashboard
           </h2>
           <div className="space-y-1">
             {/* Admin routes */}
-            <Button
-               asChild variant="ghost" className="w-full justify-start"
-            >
-                <Link to='/dashboard/analytics'>
-                    <BarChart2 className="mr-2 h-4 w-4" />
-                    {!isCollapsed && "Analytics"}
-                </Link>
-            </Button>
-            <Button
-               asChild variant="ghost" className="w-full justify-start"
-            >
-                <Link to="/dashboard/users">
-                    <Users className="mr-2 h-4 w-4" />
-                    {!isCollapsed && "Users"}
-                </Link>
-            </Button>
-            <Button
-               asChild variant="ghost" className="w-full justify-start"
-            >
-                <Link to="/dashboard/products">
-                    <ShoppingBag className="mr-2 h-4 w-4" />
-                    {!isCollapsed && "Products"}
-                </Link>
-            </Button>
-            <Button asChild variant="ghost" className="w-full justify-start"
-            >
-                <Link to="/dashboard/orders">
-                <ClipboardList className="mr-2 h-4 w-4" />
-                {!isCollapsed && "Orders"}
-                </Link>
-            </Button>
+            {
+              user?.role === "admin" && <AdminDashboardLinks isCollapsed={isCollapsed}/>
+            }
             {/* customer routes */}
-            <Button asChild variant="ghost" className="w-full justify-start">
-              <Link to="/dashboard/all-orders">
-                <ShoppingBag className="mr-2 h-4 w-4" />
-                {!isCollapsed && "View Orders"}
-              </Link>
-            </Button>
-            <Button asChild variant="ghost" className="w-full justify-start">
-              <Link to="/dashboard/profile">
-                <User className="mr-2 h-4 w-4" />
-                {!isCollapsed && "Manage Profile"}
-              </Link>
-            </Button>
+            {
+              user?.role === "customer" && <CustomerDashboardLinks isCollapsed={isCollapsed}/>
+            }
           </div>
         </div>
       </div>
@@ -111,13 +80,14 @@ export function Sidebar() {
             {theme === "light" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
             <span className="sr-only">Toggle theme</span>
           </Button>
-        <Button variant="ghost"
-              className="w-full"
-              onClick={handleLogout}
-            >
-               <LogOut className="h-4 w-4" />
-              {!isCollapsed && "Logout"}
-            </Button>
+        <Button 
+        variant="ghost" 
+        className="w-full"
+        onClick={handleLogout}
+        >
+        <LogOut className="h-4 w-4" />
+        {!isCollapsed && "Logout"}
+        </Button>
       </div>
     </div>
   )
