@@ -35,7 +35,7 @@ const NavbarProfileDropDown = ({user}) => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to={`/dashboard/${user.role=== 'customer' &&'profile'}`}>
+                <Link to={ user.role === "admin" ? "/dashboard" :`/dashboard/${user.role=== 'customer' &&'profile'}`}>
                  Go to Dashboard
                 </Link>
               </DropdownMenuItem>

@@ -55,7 +55,7 @@ export function Sidebar() {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <h2 className={cn(
-            "mb-2 px-4 text-lg font-semibold tracking-tight transition-all duration-300 ease-in-out",
+            "mb-2 px-4 text-lg font-semibold tracking-tight transition-all duration-300 ease-in-out capitalize",
             isCollapsed && "opacity-0"
           )}>
             {user?.role} Dashboard
