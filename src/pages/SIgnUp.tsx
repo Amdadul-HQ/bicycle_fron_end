@@ -42,7 +42,7 @@ export function SignUpPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true)
-    const toastId = toast.loading("logging in..,")
+    const toastId = toast.loading("Sign Up..,")
     // Here you would typically send the form data to your backend
     try{
     const userInfo = {
@@ -52,7 +52,7 @@ export function SignUpPage() {
     const res = await signup(userInfo).unwrap();
     const user = verifyToken(res.data.token) as TUser;
     dispatch(setUser({user,token:res.data.token}));
-    toast.success("Login Successful",{id:toastId,duration:2000});
+    toast.success("Sign Up Successful",{id:toastId,duration:2000});
     navigate('/')
     }catch(error){{
       toast.error("Something want wrong",{id:toastId,duration:2000})
