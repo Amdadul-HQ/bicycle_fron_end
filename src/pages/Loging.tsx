@@ -54,7 +54,7 @@ export function LoginPage() {
       toast.success("Login Successful",{id:toastId,duration:2000});
       navigate('/')
     }catch(error){{
-      toast.error("Something want wrong",{id:toastId,duration:2000})
+      toast.error((error?.data?.message) as string,{id:toastId,duration:2000})
       console.log(error);
     }}
     setIsLoading(false)

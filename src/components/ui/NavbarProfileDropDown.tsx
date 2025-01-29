@@ -11,7 +11,7 @@ const NavbarProfileDropDown = () => {
     const handleLogout = () =>{
       dispatch(logOut())
     }
-    
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

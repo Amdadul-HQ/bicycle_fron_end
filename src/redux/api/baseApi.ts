@@ -35,11 +35,11 @@ const baseQueryWithRefreshToken : BaseQueryFn<FetchArgs,BaseQueryApi,DefinitionT
         );
         const data = await res.json();
 
-        if(data?.data?.accessToken){
+        if(data?.data?.token){
             
         const user = (api.getState() as RootState).auth.user;
 
-        api.dispatch(setUser({user,token:data?.data?.accessToken}));
+        api.dispatch(setUser({user,token:data?.data?.token}));
 
         result = await baseQuery(args,api,extraOption) as TResponse<object>
         

@@ -2,91 +2,67 @@ import type React from "react"
 import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../components/ui/dialog"
 import { Button } from "../../../components/ui/button"
-import { Input } from "../../../components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
+import { AddProductForm } from "../../../components/form/AddProductForm"
 
-interface Product {
-  id: number
+interface IProduct {
   name: string
+  brand: string
   price: number
-  stock: number
+  category: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric"
+  description: string
+  quantity: number
+  inStock: boolean
+  isDeleted: boolean
 }
 
+
 export const ProductManagement: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([
-    { id: 1, name: "Product A", price: 19.99, stock: 100 },
-    { id: 2, name: "Product B", price: 29.99, stock: 50 },
-    { id: 3, name: "Product C", price: 39.99, stock: 75 },
-  ])
+  const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false)
 
-  const [newProduct, setNewProduct] = useState<Omit<Product, "id">>({ name: "", price: 0, stock: 0 })
 
-  const addProduct = () => {
-    setProducts([...products, { ...newProduct, id: products.length + 1 }])
-    setNewProduct({ name: "", price: 0, stock: 0 })
-  }
-
-  const deleteProduct = (id: number) => {
-    setProducts(products.filter((product) => product.id !== id))
-  }
+  // const deleteProduct = (id: number) => {
+  //   setProducts(products.filter((product) => product.id !== id))
+  // }
 
   return (
     <div className="space-y-4">
       {/*Removed h2 tag here*/}
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button className="mb-4">Add New Product</Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <Input
-              placeholder="Product Name"
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-            />
-            <Input
-              type="number"
-              placeholder="Price"
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({ ...newProduct, price: Number.parseFloat(e.target.value) })}
-            />
-            <Input
-              type="number"
-              placeholder="Stock"
-              value={newProduct.stock}
-              onChange={(e) => setNewProduct({ ...newProduct, stock: Number.parseInt(e.target.value) })}
-            />
-            <Button onClick={addProduct}>Add Product</Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <Dialog open={isAddProductDialogOpen} onOpenChange={setIsAddProductDialogOpen}>
+          <DialogTrigger asChild>
+            <Button onClick={() => setIsAddProductDialogOpen(true)}>Add Product</Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Add New Product</DialogTitle>
+            </DialogHeader>
+            <AddProductForm onSubmit={setIsAddProductDialogOpen} />
+          </DialogContent>
+        </Dialog>
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Stock</TableHead>
-            <TableHead>Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>{product.name}</TableCell>
-              <TableCell>${product.price.toFixed(2)}</TableCell>
-              <TableCell>{product.stock}</TableCell>
-              <TableCell>
-                <Button variant="destructive" onClick={() => deleteProduct(product.id)}>
-                  Delete
-                </Button>
-              </TableCell>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Brand</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>In Stock</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          {/* <TableBody>
+            {products.map((product, index) => (
+              <TableRow key={index}>
+                <TableCell>{product.name}</TableCell>
+                <TableCell>{product.brand}</TableCell>
+                <TableCell>${product.price.toFixed(2)}</TableCell>
+                <TableCell>{product.category}</TableCell>
+                <TableCell>{product.quantity}</TableCell>
+                <TableCell>{product.inStock ? "Yes" : "No"}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody> */}
+        </Table>
     </div>
   )
 }
