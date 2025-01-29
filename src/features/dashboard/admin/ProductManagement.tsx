@@ -5,11 +5,10 @@ import { Button } from "../../../components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { Input } from "../../../components/ui/input"
 import { AddProductForm } from "../../../components/form/AddProductForm"
-// import { UpdateProductForm } from "../../../components/form/UpdateProductForm"
-// import { ProductDetails } from "../../../components/ProductDetails"
 import { useGetAllProductsQuery,  useDeleteProductMutation } from "../../../redux/features/admin/productManagement"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../../components/ui/alert-dialog"
 import { UpdateProductForm } from "../../../components/form/UpdateProductForm"
+import { ProductDetails } from "../../../components/form/ProductDetail"
 
 interface IProduct {
   _id: string
@@ -27,7 +26,7 @@ interface IProduct {
 export const ProductManagement: React.FC = () => {
   const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false)
   const [isUpdateProductDialogOpen, setIsUpdateProductDialogOpen] = useState(false)
-  // const [isViewDetailsDialogOpen, setIsViewDetailsDialogOpen] = useState(false)
+  const [isViewDetailsDialogOpen, setIsViewDetailsDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState('')
@@ -53,10 +52,10 @@ export const ProductManagement: React.FC = () => {
     setIsUpdateProductDialogOpen(true)
   }
 
-  // const handleViewDetailsClick = (product: IProduct) => {
-  //   setSelectedProduct(product)
-  //   setIsViewDetailsDialogOpen(true)
-  // }
+  const handleViewDetailsClick = (product: IProduct) => {
+    setSelectedProduct(product)
+    setIsViewDetailsDialogOpen(true)
+  }
 
   const handleDeleteClick = (id:string) => {
     setSelectedProductId(id)
@@ -116,14 +115,14 @@ export const ProductManagement: React.FC = () => {
         </DialogContent>
       </Dialog>
 
-      {/* <Dialog open={isViewDetailsDialogOpen} onOpenChange={setIsViewDetailsDialogOpen}>
+      <Dialog open={isViewDetailsDialogOpen} onOpenChange={setIsViewDetailsDialogOpen}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Product Details</DialogTitle>
           </DialogHeader>
           {selectedProduct && <ProductDetails product={selectedProduct} />}
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
 
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>
@@ -176,7 +175,7 @@ export const ProductManagement: React.FC = () => {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    // onClick={() => handleViewDetailsClick(product)}
+                    onClick={() => handleViewDetailsClick(product)}
                     >
                     View
                   </Button>
