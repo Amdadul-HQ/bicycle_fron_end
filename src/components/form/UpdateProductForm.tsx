@@ -3,7 +3,6 @@ import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useUpdateProductMutation } from "../../redux/features/admin/productManagement"
-import { Form  } from "../ui/form"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
@@ -30,13 +29,13 @@ interface UpdateProductFormProps {
 type IProduct = z.infer<typeof formSchema> & { _id: string; isDeleted: boolean; image:string }
 
 export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, onSubmit }) => {
-  const [updateProduct] = useUpdateProductMutation()
+  
+        const [updateProduct] = useUpdateProductMutation()
 
-  const { control, setValue, watch } = useForm<IProduct>({
+        const { control,handleSubmit } = useForm<IProduct>({
           defaultValues: {
             _id:product._id,
             name: product.name,
-            image: product?.image,
             brand: product.brand,
             price: product.price,
             category: product.category,
@@ -48,7 +47,6 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
 
         const handleRemoveImage = () => {
             setImagePreview(null)
-            setValue("image", "")
             if (fileInputRef.current) {
               fileInputRef.current.value = ""
             }
@@ -57,15 +55,12 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
         const [imagePreview, setImagePreview] = useState<string | null>(product.image)
         const fileInputRef = useRef<HTMLInputElement>(null)
       
-        const watchImage = watch("image")
-      
         const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const file = e.target.files?.[0]
           if (file) {
             const reader = new FileReader()
             reader.onloadend = () => {
               setImagePreview(reader.result as string)
-              setValue("image", reader.result as string)
             }
             reader.readAsDataURL(file)
           }
@@ -77,7 +72,7 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
   })
 
   const onUpdateSubmit = async (data: z.infer<typeof formSchema>) => {
-        const toastId = toast.loading("Adding...");
+        const toastId = toast.loading("Updating...");
 
         const formData = new FormData();
 
@@ -87,18 +82,13 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
         formData.append('data',JSON.stringify(data))
 
         formData.append('file',image as File);
-        //  console.log();
+         console.log(data);
          try {
-           const updateData = {
-               id:product._id,
-               data: formData
-              }
-              
-           const res = await updateProduct(updateData)
+           const res = await updateProduct({id:product._id,data:formData})
            if (res?.error) {
              return toast.error(res?.error.data?.message, { id: toastId });
            }
-           toast.success("Product Added successfully!!", { id: toastId });
+           toast.success("Product Updated successfully!!", { id: toastId });
            onSubmit(false)
          } catch (error) {
            if (error) {
@@ -109,8 +99,7 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onUpdateSubmit)} className="space-y-8">
+      <form onSubmit={handleSubmit(onUpdateSubmit)} className="space-y-4">
       <div>
         <Label htmlFor="image">Image</Label>
         <div className="mt-2 flex flex-col items-center gap-4">
@@ -146,7 +135,7 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
             Select Image
           </Button>
         </div>
-        {!watchImage && <p className="text-red-500 text-sm mt-1">Image is required</p>}
+        {!imagePreview && <p className="text-red-500 text-sm mt-1">Image is required</p>}
       </div>
       {/* name and brand */}
       <div className="flex gap-4">
@@ -266,7 +255,6 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
       </div>
         <Button type="submit">Update Product</Button>
       </form>
-    </Form>
   )
 }
 

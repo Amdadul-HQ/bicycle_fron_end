@@ -38,8 +38,6 @@ const productManagement = baseApi.injectEndpoints({
         // delete product - changed to mutation
         deleteProduct: builder.mutation({
           query: (args) => {
-            console.log(args.id)
-           
            return( 
             {url: `/products/${args.id}`,
             method: "DELETE",})
@@ -49,11 +47,16 @@ const productManagement = baseApi.injectEndpoints({
           invalidatesTags:["products"],
         }),
         updateProduct:builder.mutation({
-          query: (args) => ({
-            url: `/products/${args.id}`,
-            method: "PATCH",
-            body: args.data,
-          }),
+          query: (args) => {
+            
+            console.log(args.id,args.data);
+            // return
+            return({
+              url: `/products/${args.id}`,
+              method: "PATCH",
+              body: args.data,
+            })
+          },
           invalidatesTags: ["products"],
         })
     })
