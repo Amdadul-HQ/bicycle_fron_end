@@ -1,73 +1,82 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
 import type React from "react"
-import { useState, useRef } from "react"
-import { Upload, X } from "lucide-react"
-import { Label } from "../ui/label"
+import { Controller, useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod"
+import { useUpdateProductMutation } from "../../redux/features/admin/productManagement"
+import { Form  } from "../ui/form"
 import { Input } from "../ui/input"
-import { Button } from "../ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
-import { Controller, useForm } from "react-hook-form"
-import { useAddProductMutation } from "../../redux/features/admin/productManagement"
+import { Button } from "../ui/button"
+import { Label } from "../ui/label"
+import { Upload, X } from "lucide-react"
+import { useRef, useState } from "react"
 import { toast } from "sonner"
 
-interface IProduct {
-  _id:string
-  name: string
-  image: string
-  brand: string
-  price: number
-  category: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric"
-  description: string
-  quantity: number
-  inStock: boolean
-  isDeleted: boolean
+const formSchema = z.object({
+  name: z.string().min(2).max(100),
+  brand: z.string().min(2).max(100),
+  price: z.number().positive(),
+  category: z.enum(["Mountain", "Road", "Hybrid", "BMX", "Electric"]),
+  description: z.string().min(10).max(1000),
+  quantity: z.number().int().nonnegative(),
+  inStock: z.boolean(),
+})
+
+interface UpdateProductFormProps {
+    product: IProduct
+    onSubmit: (data:boolean) => void
 }
+type IProduct = z.infer<typeof formSchema> & { _id: string; isDeleted: boolean; image:string }
 
-export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
-    const { control, handleSubmit, setValue, watch } = useForm<IProduct>({
-        defaultValues: {
-          name: "",
-          image: "",
-          brand: "",
-          price: 0,
-          category: "Mountain",
-          description: "",
-          quantity: 0,
-          inStock: true,
-          isDeleted: false,
-        },
-      })
+export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, onSubmit }) => {
+  const [updateProduct] = useUpdateProductMutation()
 
-      const [addProduct] = useAddProductMutation();
-    
-      const [imagePreview, setImagePreview] = useState<string | null>(null)
-      const fileInputRef = useRef<HTMLInputElement>(null)
-    
-      const watchImage = watch("image")
-    
-      const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (file) {
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            setImagePreview(reader.result as string)
-            setValue("image", reader.result as string)
+  const { control, setValue, watch } = useForm<IProduct>({
+          defaultValues: {
+            _id:product._id,
+            name: product.name,
+            image: product?.image,
+            brand: product.brand,
+            price: product.price,
+            category: product.category,
+            description: product.description,
+            quantity: product.quantity,
+            inStock: product.inStock
+          },
+        })
+
+        const handleRemoveImage = () => {
+            setImagePreview(null)
+            setValue("image", "")
+            if (fileInputRef.current) {
+              fileInputRef.current.value = ""
+            }
           }
-          reader.readAsDataURL(file)
+      
+        const [imagePreview, setImagePreview] = useState<string | null>(product.image)
+        const fileInputRef = useRef<HTMLInputElement>(null)
+      
+        const watchImage = watch("image")
+      
+        const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const file = e.target.files?.[0]
+          if (file) {
+            const reader = new FileReader()
+            reader.onloadend = () => {
+              setImagePreview(reader.result as string)
+              setValue("image", reader.result as string)
+            }
+            reader.readAsDataURL(file)
+          }
         }
-      }
-    
-      const handleRemoveImage = () => {
-        setImagePreview(null)
-        setValue("image", "")
-        if (fileInputRef.current) {
-          fileInputRef.current.value = ""
-        }
-      }
-    
-      const onSubmitForm = async(data: IProduct) => {
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: product,
+  })
+
+  const onUpdateSubmit = async (data: z.infer<typeof formSchema>) => {
         const toastId = toast.loading("Adding...");
 
         const formData = new FormData();
@@ -80,8 +89,12 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
         formData.append('file',image as File);
         //  console.log();
          try {
-           const res = await addProduct(formData)
-
+           const updateData = {
+               id:product._id,
+               data: formData
+              }
+              
+           const res = await updateProduct(updateData)
            if (res?.error) {
              return toast.error(res?.error.data?.message, { id: toastId });
            }
@@ -93,10 +106,11 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
              onSubmit(false)
            }
          }
-      }
+  }
 
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onUpdateSubmit)} className="space-y-8">
       <div>
         <Label htmlFor="image">Image</Label>
         <div className="mt-2 flex flex-col items-center gap-4">
@@ -250,8 +264,9 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
           )}
         />
       </div>
-      <Button type="submit">Add Product</Button>
-    </form>
+        <Button type="submit">Update Product</Button>
+      </form>
+    </Form>
   )
 }
 

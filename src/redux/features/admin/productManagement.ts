@@ -10,6 +10,7 @@ const productManagement = baseApi.injectEndpoints({
               body: data,
             }),
         }),
+        // All products 
         getAllProducts: builder.query({
           query: (args) => {
             const params = new URLSearchParams();
@@ -33,8 +34,30 @@ const productManagement = baseApi.injectEndpoints({
             };
           },
         }),
+        // delete product
+        // delete product - changed to mutation
+        deleteProduct: builder.mutation({
+          query: (args) => {
+            console.log(args.id)
+           
+           return( 
+            {url: `/products/${args.id}`,
+            method: "DELETE",})
+            // If you need a body, you can keep it, but if not, remove this
+            // body: args.data,
+          },
+          invalidatesTags:["products"],
+        }),
+        updateProduct:builder.mutation({
+          query: (args) => ({
+            url: `/products/${args.id}`,
+            method: "PATCH",
+            body: args.data,
+          }),
+          invalidatesTags: ["products"],
+        })
     })
 })
 
-export const {useAddProductMutation,useGetAllProductsQuery} = productManagement 
+export const {useAddProductMutation,useGetAllProductsQuery,useDeleteProductMutation,useUpdateProductMutation} = productManagement 
 
