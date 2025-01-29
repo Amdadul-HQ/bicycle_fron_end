@@ -2,14 +2,16 @@ import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Button } from "./button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./dropdown-menu";
-import { useAppDispatch } from "../../redux/hooks";
-import { logOut } from "../../redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { logOut, selectCurrentUser } from "../../redux/features/auth/authSlice";
 
-const NavbarProfileDropDown = ({user}) => {
+const NavbarProfileDropDown = () => {
     const dispatch = useAppDispatch();
-      const handleLogout = () =>{
-            dispatch(logOut())
-        }
+    const user = useAppSelector(selectCurrentUser);
+    const handleLogout = () =>{
+      dispatch(logOut())
+    }
+    
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -35,7 +37,7 @@ const NavbarProfileDropDown = ({user}) => {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to={ user.role === "admin" ? "/dashboard" :`/dashboard/${user.role=== 'customer' &&'profile'}`}>
+                <Link to={ user?.role === "admin" ? "/dashboard" :`/dashboard/${user?.role=== 'customer' &&'profile'}`}>
                  Go to Dashboard
                 </Link>
               </DropdownMenuItem>

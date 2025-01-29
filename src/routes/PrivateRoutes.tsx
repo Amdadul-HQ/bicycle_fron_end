@@ -12,7 +12,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRol
   const user = useAppSelector(selectCurrentUser);
 
   if (!user) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   if (!allowedRoles.includes(user?.role as "admin" | "customer")) {

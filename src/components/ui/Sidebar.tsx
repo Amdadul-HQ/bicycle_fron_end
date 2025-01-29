@@ -15,8 +15,8 @@ export function Sidebar() {
     const navigate = useNavigate();
     const user = useAppSelector(selectCurrentUser);
     const handleLogout = () =>{
-      dispatch(logOut())
       navigate('/')
+      dispatch(logOut())
     }
   
     useEffect(() => {
@@ -25,9 +25,6 @@ export function Sidebar() {
         setTheme(savedTheme)
       } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
         setTheme("dark")
-      }
-      if(!user){
-        navigate('/')
       }
     }, [navigate, user])
   

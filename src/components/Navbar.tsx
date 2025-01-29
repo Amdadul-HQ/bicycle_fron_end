@@ -67,7 +67,7 @@ export function Navbar() {
             </>
           }
           {
-            user && <NavbarProfileDropDown user={user}/>
+            user && <NavbarProfileDropDown/>
           }
         </div>
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
