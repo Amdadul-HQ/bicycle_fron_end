@@ -98,20 +98,6 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
       <div>
-        <Label htmlFor="name">Name</Label>
-        <Controller
-          name="name"
-          control={control}
-          rules={{ required: "Name is required" }}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <Input {...field} id="name" />
-              {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-            </>
-          )}
-        />
-      </div>
-      <div>
         <Label htmlFor="image">Image</Label>
         <div className="mt-2 flex flex-col items-center gap-4">
           <div className="relative flex items-center justify-center w-40 h-40 border-2 border-dashed border-gray-300 rounded-lg overflow-hidden">
@@ -148,43 +134,85 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
         </div>
         {!watchImage && <p className="text-red-500 text-sm mt-1">Image is required</p>}
       </div>
-      <div>
-        <Label htmlFor="brand">Brand</Label>
-        <Controller
-          name="brand"
-          control={control}
-          rules={{ required: "Brand is required" }}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <Input {...field} id="brand" />
-              {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-            </>
-          )}
-        />
+      {/* name and brand */}
+      <div className="flex gap-4">
+        <div className="w-full">
+          <Label htmlFor="name">Name</Label>
+          <Controller
+            name="name"
+            control={control}
+            rules={{ required: "Name is required" }}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Input {...field} id="name" />
+                {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
+              </>
+            )}
+          />
+        </div>
+        <div className="w-full">
+          <Label htmlFor="brand">Brand</Label>
+          <Controller
+            name="brand"
+            control={control}
+            rules={{ required: "Brand is required" }}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Input {...field} id="brand" />
+                {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
+              </>
+            )}
+          />
+        </div>
       </div>
-      <div>
-        <Label htmlFor="price">Price</Label>
-        <Controller
-          name="price"
-          control={control}
-          rules={{
-            required: "Price is required",
-            min: { value: 0, message: "Price must be positive" },
-            validate: (value) => !isNaN(value) || "Price must be a number",
-          }}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <Input
-                {...field}
-                id="price"
-                type="number"
-                step="0.01"
-                onChange={(e) => field.onChange(Number.parseFloat(e.target.value))}
-              />
-              {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-            </>
-          )}
-        />
+      <div className="flex gap-x-4">
+        <div className="w-full">
+          <Label htmlFor="price">Price</Label>
+          <Controller
+            name="price"
+            control={control}
+            rules={{
+              required: "Price is required",
+              min: { value: 0, message: "Price must be positive" },
+              validate: (value) => !isNaN(value) || "Price must be a number",
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Input
+                  {...field}
+                  id="price"
+                  type="number"
+                  step="0.01"
+                  onChange={(e) => field.onChange(Number.parseFloat(e.target.value))}
+                />
+                {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
+              </>
+            )}
+          />
+        </div>
+        <div className="w-full">
+          <Label htmlFor="quantity">Quantity</Label>
+          <Controller
+            name="quantity"
+            control={control}
+            rules={{
+              required: "Quantity is required",
+              min: { value: 0, message: "Quantity must be positive" },
+              validate: (value) => Number.isInteger(value) || "Quantity must be a whole number",
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <>
+                <Input
+                  {...field}
+                  id="quantity"
+                  type="number"
+                  onChange={(e) => field.onChange(Number.parseInt(e.target.value, 10))}
+                />
+                {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
+              </>
+            )}
+          />
+        </div>
       </div>
       <div>
         <Label htmlFor="category">Category</Label>
@@ -217,29 +245,6 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
           render={({ field, fieldState: { error } }) => (
             <>
               <Textarea {...field} id="description" />
-              {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
-            </>
-          )}
-        />
-      </div>
-      <div>
-        <Label htmlFor="quantity">Quantity</Label>
-        <Controller
-          name="quantity"
-          control={control}
-          rules={{
-            required: "Quantity is required",
-            min: { value: 0, message: "Quantity must be positive" },
-            validate: (value) => Number.isInteger(value) || "Quantity must be a whole number",
-          }}
-          render={({ field, fieldState: { error } }) => (
-            <>
-              <Input
-                {...field}
-                id="quantity"
-                type="number"
-                onChange={(e) => field.onChange(Number.parseInt(e.target.value, 10))}
-              />
               {error && <p className="text-red-500 text-sm mt-1">{error.message}</p>}
             </>
           )}

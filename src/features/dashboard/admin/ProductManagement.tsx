@@ -4,9 +4,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "../../../components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { AddProductForm } from "../../../components/form/AddProductForm"
+import { useGetAllProductsQuery } from "../../../redux/features/admin/productManagement"
 
 interface IProduct {
   name: string
+  image:string
   brand: string
   price: number
   category: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric"
@@ -19,16 +21,13 @@ interface IProduct {
 
 export const ProductManagement: React.FC = () => {
   const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false)
+  const { data: products } = useGetAllProductsQuery(undefined);
 
-
-  // const deleteProduct = (id: number) => {
-  //   setProducts(products.filter((product) => product.id !== id))
-  // }
 
   return (
     <div className="space-y-4">
       {/*Removed h2 tag here*/}
-      <Dialog open={isAddProductDialogOpen} onOpenChange={setIsAddProductDialogOpen}>
+        <Dialog open={isAddProductDialogOpen} onOpenChange={setIsAddProductDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => setIsAddProductDialogOpen(true)}>Add Product</Button>
           </DialogTrigger>
@@ -50,8 +49,8 @@ export const ProductManagement: React.FC = () => {
               <TableHead>In Stock</TableHead>
             </TableRow>
           </TableHeader>
-          {/* <TableBody>
-            {products.map((product, index) => (
+          <TableBody>
+            {products?.data?.map((product:IProduct, index:number) => (
               <TableRow key={index}>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>{product.brand}</TableCell>
@@ -61,7 +60,7 @@ export const ProductManagement: React.FC = () => {
                 <TableCell>{product.inStock ? "Yes" : "No"}</TableCell>
               </TableRow>
             ))}
-          </TableBody> */}
+          </TableBody>
         </Table>
     </div>
   )
