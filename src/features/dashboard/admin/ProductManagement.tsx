@@ -9,6 +9,7 @@ import { useGetAllProductsQuery,  useDeleteProductMutation } from "../../../redu
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../../components/ui/alert-dialog"
 import { UpdateProductForm } from "../../../components/form/UpdateProductForm"
 import { ProductDetails } from "../../../components/form/ProductDetail"
+import { toast } from "sonner"
 
 interface IProduct {
   _id: string
@@ -44,7 +45,7 @@ export const ProductManagement: React.FC = () => {
   })
   const [searchTerm, setSearchTerm] = useState("")
 
-  const { data: products } = useGetAllProductsQuery(undefined)
+  const { data: products } = useGetAllProductsQuery(searchTerm)
   const [deleteProduct] = useDeleteProductMutation()
 
   const handleUpdateClick = (product: IProduct) => {
@@ -68,6 +69,7 @@ export const ProductManagement: React.FC = () => {
       setIsDeleteDialogOpen(false)
       if(res.data.success){
         setIsSuccessDialogOpen(true)
+        toast.success("Product Deleted Successfully!!")
       }
     }
   }

@@ -2,56 +2,83 @@ import type React from "react"
 import { useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { Button } from "../../../components/ui/button"
+import { useBlockUserMutation, useGetAllUserQuery } from "../../../redux/features/admin/userManagement"
+import { BlockUserModal } from "../../../components/ui/BlockUserModal"
+import { toast } from "sonner"
 
 interface User {
-  id: number
+  _id: string
   name: string
   email: string
-  status: "active" | "inactive"
+  status: string
 }
 
 export const UserManagement: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([
-    { id: 1, name: "John Doe", email: "john@example.com", status: "active" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", status: "active" },
-    { id: 3, name: "Bob Johnson", email: "bob@example.com", status: "inactive" },
-  ])
+  const { data, isLoading, isError, error } = useGetAllUserQuery(undefined);
+  const [blockUser]= useBlockUserMutation()
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
 
-  const toggleUserStatus = (id: number) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id ? { ...user, status: user.status === "active" ? "inactive" : "active" } : user,
-      ),
-    )
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+
+  if (isError) {
+    return <div>Error: {error instanceof Error ? error.message : "An error occurred"}</div>
+  }
+
+  const handleBlockUser = (user: User) => {
+    setSelectedUser(user)
+  }
+
+  const handleConfirmBlock =async () => {
+    // Implement the logic to block the user=
+    const toastId = toast.loading("Blocking...");
+    try{
+       const res = await blockUser({id:selectedUser?._id})
+       if(res.data.success){
+        setSelectedUser(null)
+        toast.success("User Blocked!!!",{id:toastId})
+      }
+    }
+    catch(error:any){
+      toast.error(error.message?? 'User Blocked Failed!!',{id:toastId})
+    }
+    setSelectedUser(null)
   }
 
   return (
     <div className="space-y-4">
-      {/*Removed h2 tag here*/}
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Status</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
+          {data?.data?.map((user: User) => (
+            <TableRow key={user._id}>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.status}</TableCell>
               <TableCell>
-                <Button onClick={() => toggleUserStatus(user.id)}>
-                  {user.status === "active" ? "Deactivate" : "Activate"}
+                <Button
+                  onClick={() => handleBlockUser(user)}
+                  variant={user.status === "active" ? "destructive" : "secondary"}
+                >
+                  {user.status === "active" ? "Block" : "Unblock"}
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <BlockUserModal
+        isOpen={!!selectedUser}
+        onClose={() => setSelectedUser(null)}
+        onConfirm={handleConfirmBlock}
+        userName={selectedUser?.name || ""}
+      />
     </div>
   )
 }

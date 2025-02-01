@@ -1,6 +1,5 @@
 import type React from "react"
 import { Controller, useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import { useUpdateProductMutation } from "../../redux/features/admin/productManagement"
 import { Input } from "../ui/input"
@@ -66,11 +65,6 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
           }
         }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: product,
-  })
-
   const onUpdateSubmit = async (data: z.infer<typeof formSchema>) => {
         const toastId = toast.loading("Updating...");
 
@@ -82,7 +76,7 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
         formData.append('data',JSON.stringify(data))
 
         formData.append('file',image as File);
-         console.log(data);
+
          try {
            const res = await updateProduct({id:product._id,data:formData})
            if (res?.error) {
