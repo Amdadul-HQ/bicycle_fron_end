@@ -10,7 +10,7 @@ export function useCarousel(items: any[], interval = 5000) {
       setDirection("right")
       return nextIndex
     })
-  }, [items.length])
+  }, [items?.length])
 
   const goToPrevious = useCallback(() => {
     setCurrentIndex((prevIndex) => {
@@ -18,7 +18,7 @@ export function useCarousel(items: any[], interval = 5000) {
       setDirection("left")
       return nextIndex
     })
-  }, [items.length])
+  }, [items?.length])
 
   useEffect(() => {
     const timer = setInterval(goToNext, interval)
