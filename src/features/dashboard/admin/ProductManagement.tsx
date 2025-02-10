@@ -11,7 +11,7 @@ import { UpdateProductForm } from "../../../components/form/UpdateProductForm"
 import { ProductDetails } from "../../../components/form/ProductDetail"
 import { toast } from "sonner"
 
-interface IProduct {
+export interface IProduct {
   _id: string
   name: string
   image: string

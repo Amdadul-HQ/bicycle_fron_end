@@ -13,6 +13,9 @@ import { ManageProfile } from "../features/dashboard/customer/ManageProfile";
 import { UnauthorizedPage } from "../pages/UnauthorizedPage";
 import { ErrorPage } from "../pages/ErrorPage";
 import { PrivateRoute } from "./PrivateRoutes";
+import AllCycles from "../pages/AllCycles";
+import AboutUs from "../pages/AboutUs";
+import { Events } from "../pages/Events";
 
 export const router = createBrowserRouter([
     {
@@ -23,6 +26,18 @@ export const router = createBrowserRouter([
             {
                 path:'/',
                 element:<Homepage/>
+            },
+            {
+                path:'cycles',
+                element:<AllCycles/>
+            },
+            {
+                path:'about',
+                element:<AboutUs/>
+            },
+            {
+                path:'/event',
+                element:<Events/>
             }
         ],
     },
