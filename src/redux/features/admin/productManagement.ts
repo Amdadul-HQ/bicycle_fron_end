@@ -57,9 +57,32 @@ const productManagement = baseApi.injectEndpoints({
             })
           },
           invalidatesTags: ["products"],
+        }),
+        getAllOrders:builder.query({
+          query: (args) => {
+            const params = new URLSearchParams();
+            if (args) {
+              args.forEach((item: TQueryParam) => {
+                params.append(item.name, item.value as string);
+              });
+            }
+            return {
+              url: "/orders",
+              method: "GET",
+              params: params,
+            };
+          },
+          providesTags: ["products"],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          transformResponse: (response: TResponseRedux<any>) => {
+            return {
+              data: response.data,
+              meta: response.meta,
+            };
+          },
         })
     })
 })
 
-export const {useAddProductMutation,useGetAllProductsQuery,useDeleteProductMutation,useUpdateProductMutation} = productManagement 
+export const {useAddProductMutation,useGetAllProductsQuery,useDeleteProductMutation,useUpdateProductMutation,useGetAllOrdersQuery} = productManagement 
 
