@@ -1,7 +1,5 @@
-"use client"
-
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -16,10 +14,11 @@ import { Input } from "../ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Checkbox } from "../ui/checkbox"
 import { toast } from "sonner"
-import { useAppDispatch } from "../../redux/hooks"
+import { useAppDispatch, useAppSelector } from "../../redux/hooks"
 import { useLoginMutation } from "../../redux/features/auth/authApi"
 import { verifyToken } from "../../utils/function/verifyToken"
-import { setUser, TUser } from "../../redux/features/auth/authSlice"
+import { selectCurrentUser, setUser, TUser } from "../../redux/features/auth/authSlice"
+import { useCreatePaymentIntentMutation, usePlaceOrderMutation } from "../../redux/features/payment/paymentApi"
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 interface ProductDetailsProps {
@@ -45,7 +44,7 @@ const formSchema = z.object({
   rememberMe: z.boolean().default(false),
 })
 
-const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({ onLoginSuccess }) => {
+const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }> = ({ onLoginSuccess,onClose }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [login] = useLoginMutation()
@@ -73,6 +72,7 @@ const LoginForm: React.FC<{ onLoginSuccess: () => void }> = ({ onLoginSuccess })
       dispatch(setUser({ user, token: res.data.token }))
       toast.success("Login Successful", { id: toastId, duration: 2000 })
       onLoginSuccess()
+      onClose()
     } catch (error: any) {
       toast.error(error?.data?.message || "Login failed", { id: toastId, duration: 2000 })
       console.log(error)
@@ -141,6 +141,10 @@ const PaymentForm: React.FC<{
   const elements = useElements()
   const [isProcessing, setIsProcessing] = useState(false)
   const [paymentError, setPaymentError] = useState<string | null>(null)
+  const [createPaymentIntent] = useCreatePaymentIntentMutation()
+  const[placeOrder] = usePlaceOrderMutation()
+  const user = useAppSelector(selectCurrentUser);
+  console.log(product);
 
   const totalAmount = product.price * quantity
 
@@ -155,20 +159,22 @@ const PaymentForm: React.FC<{
     setPaymentError(null)
 
     try {
-      const response = await fetch("/api/create-payment-intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: totalAmount * 100, // Stripe expects amount in cents
-          currency: "usd",
-        }),
-      })
+     
+      const response = await createPaymentIntent({totalAmount})
 
-      const { clientSecret } = await response.json()
+      const clientSecret  = await response?.data?.data?.client_secret
+
+      console.log(clientSecret);
+      // console.log(response.data.data);
 
       const cardElement = elements.getElement(CardElement)
+
+      const orderInfo = {
+        email:user?.email,
+        product:product._id,
+        quantity:quantity,
+        totalPrice: product.price * quantity
+      }
 
       if (cardElement) {
         const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
@@ -180,7 +186,8 @@ const PaymentForm: React.FC<{
         if (error) {
           setPaymentError(error.message ?? "An error occurred")
         } else if (paymentIntent.status === "succeeded") {
-          console.log("Payment successful")
+          await placeOrder(orderInfo)
+          toast.success("Payment successful")
           onClose()
           // Here you would typically update your backend about the successful purchase
         }
@@ -223,12 +230,12 @@ const PaymentForm: React.FC<{
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-        <p className="font-semibold">Total: ${totalAmount.toFixed(2)}</p>
+        <p className="font-semibold">Total: ${totalAmount}</p>
       </div>
       <CardElement className="mt-4" />
       {paymentError && <div className="text-red-500">{paymentError}</div>}
       <Button type="submit" disabled={!stripe || isProcessing} className="w-full">
-        {isProcessing ? "Processing..." : `Pay $${totalAmount.toFixed(2)}`}
+        {isProcessing ? "Processing..." : `Pay $${totalAmount}`}
       </Button>
     </form>
   )
@@ -238,13 +245,13 @@ const LoginModal: React.FC<{ onClose: () => void; onLoginSuccess: () => void }> 
   const navigate = useNavigate()
 
   const handleCreateAccount = () => {
-    navigate("/register") // Adjust this path as needed
+    navigate("/signup") // Adjust this path as needed
     onClose()
   }
 
   return (
     <div className="space-y-4">
-      <LoginForm onLoginSuccess={onLoginSuccess} />
+      <LoginForm onClose={onClose} onLoginSuccess={onLoginSuccess} />
       <p className="text-center text-sm">
         Don't have an account?{" "}
         <Button variant="link" className="p-0" onClick={handleCreateAccount}>
@@ -256,16 +263,18 @@ const LoginModal: React.FC<{ onClose: () => void; onLoginSuccess: () => void }> 
 }
 
 export const CustomerProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+  const user = useAppSelector(selectCurrentUser);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
   const [quantity, setQuantity] = useState(1)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
+  const [isAuthenticated, setIsAuthenticated] = useState(user?.role === "customer" ? true :false)
   const handleBuyNow = () => {
     setIsPaymentModalOpen(true)
   }
 
   const handleLoginSuccess = () => {
-    setIsAuthenticated(true)
+
+      setIsAuthenticated(true)
+
     // You might want to fetch user data or perform other actions here
   }
 
@@ -302,7 +311,7 @@ export const CustomerProductDetails: React.FC<ProductDetailsProps> = ({ product 
           <DialogHeader>
             <DialogTitle>{isAuthenticated ? "Complete Your Purchase" : "Login Required"}</DialogTitle>
           </DialogHeader>
-          {isAuthenticated ? (
+          {isAuthenticated && (
             <Elements stripe={stripePromise}>
               <PaymentForm
                 product={product}
@@ -311,9 +320,12 @@ export const CustomerProductDetails: React.FC<ProductDetailsProps> = ({ product 
                 setQuantity={setQuantity}
               />
             </Elements>
-          ) : (
-            <LoginModal onClose={() => setIsPaymentModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
-          )}
+          )  
+        }
+        {
+          !isAuthenticated && <LoginModal onClose={() => setIsPaymentModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
+        }
+            
         </DialogContent>
       </Dialog>
     </Card>

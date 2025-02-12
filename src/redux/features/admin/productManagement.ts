@@ -49,7 +49,6 @@ const productManagement = baseApi.injectEndpoints({
         updateProduct:builder.mutation({
           query: (args) => {
             
-            console.log(args.id,args.data);
             // return
             return({
               url: `/products/${args.id}`,

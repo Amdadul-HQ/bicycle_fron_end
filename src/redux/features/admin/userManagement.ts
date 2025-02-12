@@ -31,8 +31,6 @@ const userManagement = baseApi.injectEndpoints({
              return( 
               {url: `/users/${args.id}`,
               method: "DELETE",})
-              // If you need a body, you can keep it, but if not, remove this
-              // body: args.data,
             },
             invalidatesTags:["users"],
           }),
