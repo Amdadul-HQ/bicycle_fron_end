@@ -4,35 +4,36 @@ import type React from "react"
 import { useMemo } from "react"
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts"
 import { format } from "date-fns"
-import { useGetAllOrdersQuery } from "../../../redux/features/admin/productManagement"
+import { useGetAllOrdersQuery, useGetRevenueQuery } from "../../../redux/features/admin/productManagement"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 
 export const Analytics: React.FC = () => {
   const { data: orders, isLoading, error } = useGetAllOrdersQuery(undefined)
+  const {data:totalRevenue,isFetching}= useGetRevenueQuery(undefined)
   const analytics = useMemo(() => {
     if (!orders) return null
 
-    const totalRevenue = orders?.data?.reduce((sum, order) => sum + order.totalPrice, 0)
     const totalOrders = orders?.data?.length
     const uniqueUsers = new Set(orders?.data.map((order) => order.email)).size
     const totalQuantity = orders?.data?.reduce((sum, order) => sum + order.quantity, 0)
-
+    
     // Prepare data for the line chart
     const revenueOverTime = orders?.data
-      ? [...orders.data]
-          .sort((a, b) => new Date(a?.createdAt).getTime() - new Date(b?.createdAt).getTime())
-          .map((order) => ({
-            date: format(new Date(order.createdAt), "MMM dd"),
+    ? [...orders.data]
+    .sort((a, b) => new Date(a?.createdAt).getTime() - new Date(b?.createdAt).getTime())
+    .map((order) => ({
+      date: format(new Date(order.createdAt), "MMM dd"),
             revenue: order?.totalPrice,
           }))
-      : []
-
-    return { totalRevenue, totalOrders, uniqueUsers, totalQuantity, revenueOverTime }
-  }, [orders?.data])
-
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error loading data</div>
-  if (!analytics) return null
+          : []
+          
+          return { totalOrders, uniqueUsers, totalQuantity, revenueOverTime }
+        }, [orders?.data])
+        
+        if(isFetching)return <p>Loading</p>
+        if (isLoading) return <div>Loading...</div>
+        if (error) return <div>Error loading data</div>
+        if (!analytics) return null
 
   return (
     <div className="space-y-4">
@@ -42,7 +43,7 @@ export const Analytics: React.FC = () => {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">${analytics.totalRevenue}</div>
+            <div className="text-2xl font-bold">${totalRevenue?.data}</div>
           </CardContent>
         </Card>
         <Card>
