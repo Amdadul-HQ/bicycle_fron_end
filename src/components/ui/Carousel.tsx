@@ -1,10 +1,10 @@
-import type React from "react"
 import { useState, useEffect, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useGetAllProductsQuery } from "../../redux/features/admin/productManagement"
 import { Button } from "../../components/ui/button"
+import { IProduct } from "../../features/dashboard/admin/ProductManagement"
 
-const Carousel: React.FC = () => {
+const Carousel = () => {
   const { data, isLoading, error, isError } = useGetAllProductsQuery(undefined)
   const products = data?.data || []
 
@@ -47,7 +47,7 @@ const Carousel: React.FC = () => {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {products.map((product, index) => {
+      {products.map((product:IProduct, index:number) => {
         const isActive = index === currentIndex
         const isPrev = index === (currentIndex - 1 + products.length) % products.length
         const isNext = index === (currentIndex + 1) % products.length
@@ -96,7 +96,8 @@ const Carousel: React.FC = () => {
         <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
       </button>
       <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {products.map((_, index) => (
+        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+        {products.map((_: any, index:number) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}

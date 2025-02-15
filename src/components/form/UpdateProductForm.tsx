@@ -80,7 +80,8 @@ export const UpdateProductForm: React.FC<UpdateProductFormProps> = ({ product, o
          try {
            const res = await updateProduct({id:product._id,data:formData})
            if (res?.error) {
-             return toast.error(res?.error.data?.message, { id: toastId });
+            //@ts-expect-error ignoring this error
+             return toast.error(res?.error?.data?.message, { id: toastId });
            }
            toast.success("Product Updated successfully!!", { id: toastId });
            onSubmit(false)

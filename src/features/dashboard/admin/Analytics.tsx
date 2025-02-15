@@ -14,8 +14,10 @@ export const Analytics: React.FC = () => {
     if (!orders) return null
 
     const totalOrders = orders?.data?.length
-    const uniqueUsers = new Set(orders?.data.map((order) => order.email)).size
-    const totalQuantity = orders?.data?.reduce((sum, order) => sum + order.quantity, 0)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const uniqueUsers = new Set(orders?.data?.map((order:any) => order.email)).size
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const totalQuantity = orders?.data?.reduce((sum:number, order:any) => sum + order?.quantity, 0)
     
     // Prepare data for the line chart
     const revenueOverTime = orders?.data

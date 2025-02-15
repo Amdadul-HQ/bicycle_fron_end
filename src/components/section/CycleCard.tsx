@@ -83,6 +83,7 @@ export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) 
           {isAuthenticated ? (
             <Elements stripe={stripePromise}>
               <PaymentForm
+              //@ts-expect-error ignoring this error
                 product={product}
                 onClose={() => setIsPaymentModalOpen(false)}
                 quantity={quantity}

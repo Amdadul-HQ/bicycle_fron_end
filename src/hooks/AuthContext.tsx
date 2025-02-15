@@ -27,7 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [])
 
-  const login = async (email: string, password: string) => {
+  const login = async (email: string) => {
     // This is a mock login. In a real app, you'd call an API here.
     const mockUser: User = {
       id: "1",

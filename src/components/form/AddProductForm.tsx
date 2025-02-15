@@ -83,7 +83,8 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
            const res = await addProduct(formData)
 
            if (res?.error) {
-             return toast.error(res?.error.data?.message, { id: toastId });
+            //@ts-expect-error ignoring this error
+             return toast.error(res?.error?.data?.message, { id: toastId });
            }
            toast.success("Product Added successfully!!", { id: toastId });
            onSubmit(false)

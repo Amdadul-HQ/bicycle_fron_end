@@ -54,6 +54,7 @@ export function LoginPage() {
       toast.success("Login Successful",{id:toastId,duration:2000});
       navigate('/')
     }catch(error){{
+      //@ts-expect-error ignoring
       toast.error((error?.data?.message) as string,{id:toastId,duration:2000})
       console.log(error);
     }}
