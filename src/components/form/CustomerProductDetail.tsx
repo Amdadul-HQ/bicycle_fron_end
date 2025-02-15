@@ -268,14 +268,17 @@ export const CustomerProductDetails: React.FC<ProductDetailsProps> = ({ product 
   const [quantity, setQuantity] = useState(1)
   const [isAuthenticated, setIsAuthenticated] = useState(user?.role === "customer" ? true :false)
   const handleBuyNow = () => {
-    setIsPaymentModalOpen(true)
+    if(user?.role){
+      setIsPaymentModalOpen(true)
+      setIsAuthenticated(true)
+    }
+    else{
+      setIsPaymentModalOpen(true)
+    }
   }
 
   const handleLoginSuccess = () => {
-
       setIsAuthenticated(true)
-
-    // You might want to fetch user data or perform other actions here
   }
 
   return (

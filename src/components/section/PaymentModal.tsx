@@ -21,7 +21,6 @@ interface PaymentModalProps {
 }
 
 const PaymentForm: React.FC<{ product: Product; onClose: () => void }> = ({ product, onClose }) => {
-    console.log(product);
   const stripe = useStripe()
   const elements = useElements()
   const [isProcessing, setIsProcessing] = useState(false)
