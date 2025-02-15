@@ -1,5 +1,5 @@
 import type React from "react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -44,7 +44,7 @@ const formSchema = z.object({
   rememberMe: z.boolean().default(false),
 })
 
-const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }> = ({ onLoginSuccess,onClose }) => {
+export const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }> = ({ onLoginSuccess,onClose }) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [login] = useLoginMutation()
@@ -131,7 +131,7 @@ const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }> = ({ 
   )
 }
 
-const PaymentForm: React.FC<{
+export const PaymentForm: React.FC<{
   product: ProductDetailsProps["product"]
   onClose: () => void
   quantity: number

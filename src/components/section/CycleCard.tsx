@@ -1,14 +1,29 @@
+"use client"
+
 import type React from "react"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Card, CardContent } from "../ui/card"
 import { Button } from "../ui/button"
-import PaymentModal from "./PaymentModal"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
+import { Elements } from "@stripe/react-stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
+import { useAppSelector } from "../../redux/hooks"
+import { selectCurrentUser } from "../../redux/features/auth/authSlice"
+import { LoginForm, PaymentForm } from "../form/CustomerProductDetail"
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 interface Product {
   id: string
   name: string
   price: number
   image?: string
+  brand: string
+  category: string
+  description: string
+  quantity: number
+  inStock: boolean
 }
 
 interface CycleCardProps {
@@ -18,6 +33,28 @@ interface CycleCardProps {
 
 export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) => {
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  const user = useAppSelector(selectCurrentUser)
+  const [isAuthenticated, setIsAuthenticated] = useState(user?.role === "customer")
+  const navigate = useNavigate()
+
+  const handleBuyNow = () => {
+    if (user?.role) {
+      setIsPaymentModalOpen(true)
+      setIsAuthenticated(true)
+    } else {
+      setIsPaymentModalOpen(true)
+    }
+  }
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true)
+  }
+
+  const handleCreateAccount = () => {
+    navigate("/signup")
+    setIsPaymentModalOpen(false)
+  }
 
   return (
     <Card className="overflow-hidden group">
@@ -28,7 +65,7 @@ export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) 
             <Button onClick={() => onViewDetails(product)} variant="secondary" className="w-full">
               View Details
             </Button>
-            <Button onClick={() => setIsPaymentModalOpen(true)} variant="primary" className="w-full">
+            <Button onClick={handleBuyNow} variant="primary" className="w-full">
               Buy Now
             </Button>
           </div>
@@ -38,7 +75,33 @@ export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) 
         <h2 className="font-bold text-lg mb-2">{product.name}</h2>
         <p className="text-gray-600">${product.price.toFixed(2)}</p>
       </CardContent>
-      <PaymentModal isOpen={isPaymentModalOpen} onClose={() => setIsPaymentModalOpen(false)} product={product} />
+      <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{isAuthenticated ? "Complete Your Purchase" : "Login Required"}</DialogTitle>
+          </DialogHeader>
+          {isAuthenticated ? (
+            <Elements stripe={stripePromise}>
+              <PaymentForm
+                product={product}
+                onClose={() => setIsPaymentModalOpen(false)}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
+            </Elements>
+          ) : (
+            <div className="space-y-4">
+              <LoginForm onLoginSuccess={handleLoginSuccess} onClose={() => setIsPaymentModalOpen(false)} />
+              <p className="text-center text-sm">
+                Don't have an account?{" "}
+                <Button variant="link" className="p-0" onClick={handleCreateAccount}>
+                  Create an account
+                </Button>
+              </p>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </Card>
   )
 }
