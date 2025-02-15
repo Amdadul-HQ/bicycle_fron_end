@@ -15,7 +15,7 @@ export default function FancyTestimonials() {
   return (
     <section className="py-24 px-4 relative overflow-hidden min-h-screen flex items-center">
       {/* Animated gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-950 via-indigo-900 to-blue-900 opacity-90">
+      <div className="absolute inset-0 bg-gradient-to-br opacity-90">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2Utb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-20" />
       </div>
 
