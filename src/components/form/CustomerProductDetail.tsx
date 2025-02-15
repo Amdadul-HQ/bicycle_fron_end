@@ -23,6 +23,7 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 interface ProductDetailsProps {
   product: {
+    [x: string]: string
     name: string
     image: string
     brand: string
@@ -45,7 +46,6 @@ const formSchema = z.object({
 })
 
 export const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }> = ({ onLoginSuccess,onClose }) => {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [login] = useLoginMutation()
   const [isLoading, setIsLoading] = useState(false)
@@ -73,6 +73,7 @@ export const LoginForm: React.FC<{ onLoginSuccess: () => void,onClose:()=>void }
       toast.success("Login Successful", { id: toastId, duration: 2000 })
       onLoginSuccess()
       onClose()
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error(error?.data?.message || "Login failed", { id: toastId, duration: 2000 })
       console.log(error)
@@ -296,10 +297,10 @@ export const CustomerProductDetails: React.FC<ProductDetailsProps> = ({ product 
         </div>
         <div className="space-y-4">
           <InfoItem label="Brand" value={product.brand} />
-          <InfoItem label="Price" value={`$${product.price.toFixed(2)}`} />
+          <InfoItem label="Price" value={`$${product.price}`} />
           <InfoItem label="Category" value={product.category} />
           <InfoItem label="Description" value={product.description} />
-          <InfoItem label="Quantity" value={product.quantity.toString()} />
+          <InfoItem label="Quantity" value={product.quantity} />
           <InfoItem label="In Stock" value={product.inStock ? "Yes" : "No"} />
           <div className="pt-4">
             <Button onClick={handleBuyNow} className="w-full py-6 text-lg font-semibold" disabled={!product.inStock}>

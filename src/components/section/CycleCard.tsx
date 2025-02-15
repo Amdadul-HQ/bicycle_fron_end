@@ -65,7 +65,7 @@ export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) 
             <Button onClick={() => onViewDetails(product)} variant="secondary" className="w-full">
               View Details
             </Button>
-            <Button onClick={handleBuyNow} variant="primary" className="w-full">
+            <Button onClick={handleBuyNow} variant="default" className="w-full">
               Buy Now
             </Button>
           </div>
@@ -73,7 +73,7 @@ export const CycleCard: React.FC<CycleCardProps> = ({ product, onViewDetails }) 
       </div>
       <CardContent className="p-4">
         <h2 className="font-bold text-lg mb-2">{product.name}</h2>
-        <p className="text-gray-600">${product.price.toFixed(2)}</p>
+        <p className="text-gray-600">${product.price}</p>
       </CardContent>
       <Dialog open={isPaymentModalOpen} onOpenChange={setIsPaymentModalOpen}>
         <DialogContent>
