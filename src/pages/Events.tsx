@@ -5,7 +5,7 @@ import { Badge } from "../components/ui/badge"
 
 export const Events: React.FC = () => {
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className="container mx-auto px-4 py-16 max-w-7xl">
       <h1 className="text-4xl font-bold text-center mb-12">CycleMaster in International Competitions</h1>
       <p className="text-xl text-center mb-12 max-w-3xl mx-auto">
         Our cutting-edge bicycles and passionate riders are making waves in international competitions. See where

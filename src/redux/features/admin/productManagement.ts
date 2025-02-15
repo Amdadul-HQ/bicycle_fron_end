@@ -9,6 +9,7 @@ const productManagement = baseApi.injectEndpoints({
               method: "POST",
               body: data,
             }),
+            invalidatesTags: ["products"],
         }),
         // All products 
         getAllProducts: builder.query({

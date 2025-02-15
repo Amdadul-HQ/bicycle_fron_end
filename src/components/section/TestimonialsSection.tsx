@@ -26,8 +26,8 @@ export default function FancyTestimonials() {
 
       <div className="max-w-7xl mx-auto relative">
         <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight">What people say</h2>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">What people say</h2>
+          <p className="text-lg max-w-2xl mx-auto">
             Discover what our satisfied customers have to say about their experiences with our products/services.
           </p>
         </div>
@@ -57,13 +57,13 @@ export default function FancyTestimonials() {
                         </Avatar>
                       </div>
                       <div>
-                        <h3 className="text-xl font-semibold text-white group-hover:text-blue-300 transition-colors">
+                        <h3 className="text-xl font-semibold group-hover:text-blue-300 transition-colors">
                           {testimonial.name}
                         </h3>
                         <p className="text-sm text-gray-400">{testimonial.role}</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-base leading-relaxed">{testimonial.content}</p>
+                    <p className="text-base leading-relaxed">{testimonial.content}</p>
                   </div>
                 </CardContent>
               </Card>

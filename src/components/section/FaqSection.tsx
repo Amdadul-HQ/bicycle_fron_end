@@ -61,7 +61,7 @@ export default function ZincFAQSection() {
         {[...Array(20)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-zinc-300 rounded-full"
+            className="absolute w-2 h-2 rounded-full"
             initial={{
               x: Math.random() * window.innerWidth,
               y: Math.random() * window.innerHeight,
@@ -81,7 +81,7 @@ export default function ZincFAQSection() {
 
       <div className="max-w-3xl mx-auto relative z-10">
         <motion.h2
-          className="text-3xl md:text-4xl font-bold text-center mb-8 text-zinc-100"
+          className="text-3xl md:text-4xl font-bold text-center mb-8"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -100,9 +100,9 @@ export default function ZincFAQSection() {
             placeholder="Search FAQs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-zinc-800 border-zinc-700 text-zinc-100 placeholder-zinc-400"
+            className="pl-10 border-zinc-700 placeholder-zinc-400"
           />
-          <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-zinc-400" />
+          <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2" />
         </motion.div>
 
         <AnimatePresence>
@@ -117,19 +117,19 @@ export default function ZincFAQSection() {
                     transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
                     <AccordionItem value={`item-${index}`}>
-                      <AccordionTrigger className="text-left text-zinc-100 hover:text-zinc-300">
+                      <AccordionTrigger className="text-left">
                         <div className="flex items-center gap-3">
                           <motion.div
-                            className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center flex-shrink-0"
+                            className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
                           >
-                            <faq.icon className="w-5 h-5 text-zinc-300" />
+                            <faq.icon className="w-5 h-5" />
                           </motion.div>
                           <span>{faq.question}</span>
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="text-zinc-300 pl-11">{faq.answer}</AccordionContent>
+                      <AccordionContent className="pl-11">{faq.answer}</AccordionContent>
                     </AccordionItem>
                   </motion.div>
                 ))}
