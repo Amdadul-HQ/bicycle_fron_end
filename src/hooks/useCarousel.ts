@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useCarousel(items: any[], interval = 5000) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState<"left" | "right">("right")

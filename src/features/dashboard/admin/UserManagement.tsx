@@ -40,6 +40,7 @@ export const UserManagement: React.FC = () => {
         toast.success("User Blocked!!!",{id:toastId})
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     catch(error:any){
       toast.error(error.message?? 'User Blocked Failed!!',{id:toastId})
     }
