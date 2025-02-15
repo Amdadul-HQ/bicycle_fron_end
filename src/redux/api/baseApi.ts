@@ -6,7 +6,7 @@ import { logOut, setUser } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery(
     {
-    baseUrl:"http://localhost:3000/api/v1",
+    baseUrl:"https://assigement-04-back-end.vercel.app/api/v1",
     credentials:'include',
     prepareHeaders:(headers,{getState})=>{
         const token = (getState() as RootState).auth.token;
@@ -28,7 +28,7 @@ const baseQueryWithRefreshToken : BaseQueryFn<FetchArgs,BaseQueryApi,DefinitionT
     if(result?.error?.status === 401){
         // * send Refresh token
         const res = await fetch(
-          "http://localhost:3000/api/v1/auth/refresh-token",
+          "https://assigement-04-back-end.vercel.app/api/v1/auth/refresh-token",
           {
             method: "POST",
             credentials: "include",
