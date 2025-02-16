@@ -1,14 +1,11 @@
-import type React from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
+import { useGetUserOrderQuery } from "../../../redux/features/payment/paymentApi"
 
-const mockOrders = [
-  { id: 1, date: "2023-05-01", total: 59.99, status: "Delivered" },
-  { id: 2, date: "2023-05-15", total: 89.99, status: "Shipped" },
-  { id: 3, date: "2023-05-30", total: 119.99, status: "Processing" },
-]
+export const ViewOrders = () => {
+  const { data } = useGetUserOrderQuery(undefined)
+  const orders = data?.data || []
 
-export const ViewOrders: React.FC = () => {
   return (
     <Card>
       <CardHeader>
@@ -20,17 +17,19 @@ export const ViewOrders: React.FC = () => {
             <TableRow>
               <TableHead>Order ID</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Total</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Product ID</TableHead>
+              <TableHead>Quantity</TableHead>
+              <TableHead>Total Price</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {mockOrders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{order.date}</TableCell>
-                <TableCell>${order.total.toFixed(2)}</TableCell>
-                <TableCell>{order.status}</TableCell>
+            {orders.map((order) => (
+              <TableRow key={order._id}>
+                <TableCell>{order._id}</TableCell>
+                <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell>{order.product}</TableCell>
+                <TableCell>{order.quantity}</TableCell>
+                <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
