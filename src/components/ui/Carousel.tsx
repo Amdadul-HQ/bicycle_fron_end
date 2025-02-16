@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useGetAllProductsQuery } from "../../redux/features/admin/productManagement"
 import { Button } from "../../components/ui/button"
 import { IProduct } from "../../features/dashboard/admin/ProductManagement"
+import { Link } from "react-router-dom"
 
 const Carousel = () => {
   const { data, isLoading, error, isError } = useGetAllProductsQuery(undefined)
@@ -74,9 +75,11 @@ const Carousel = () => {
               <p className="text-white text-lg sm:text-xl md:text-2xl font-semibold mb-4 animate-fade-in-up delay-200">
                 Price: ${product.price}
               </p>
+              <Link to={'/cycles'}>
               <Button variant="secondary" className="animate-fade-in-up delay-300">
                 Shop Now
               </Button>
+              </Link>
             </div>
           </div>
         )
