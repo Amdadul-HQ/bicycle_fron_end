@@ -2,6 +2,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { useGetUserOrderQuery } from "../../../redux/features/payment/paymentApi"
 
+type IOrder = {
+  _id:string,
+  createdAt:string,
+  product:string,
+  quantity:number,
+  totalPrice:number,
+}
+
 export const ViewOrders = () => {
   const { data } = useGetUserOrderQuery(undefined)
   const orders = data?.data || []
@@ -23,13 +31,13 @@ export const ViewOrders = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => (
+            {orders.map((order:IOrder) => (
               <TableRow key={order._id}>
                 <TableCell>{order._id}</TableCell>
                 <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>{order.product}</TableCell>
                 <TableCell>{order.quantity}</TableCell>
-                <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
+                <TableCell>${order.totalPrice}</TableCell>
               </TableRow>
             ))}
           </TableBody>
