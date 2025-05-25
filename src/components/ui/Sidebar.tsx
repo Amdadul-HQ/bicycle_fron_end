@@ -7,6 +7,7 @@ import { logOut, selectCurrentUser } from '../../redux/features/auth/authSlice'
 import AdminDashboardLinks from './AdminDashboardLinks'
 import CustomerDashboardLinks from './CustomerDashboardLinks'
 import { useNavigate } from 'react-router-dom'
+import VendorDashboardLinks from './VendorDashboardLinks'
 
 export function Sidebar() {
     const [isCollapsed, setIsCollapsed] = React.useState(false)
@@ -65,6 +66,10 @@ export function Sidebar() {
             {/* customer routes */}
             {
               user?.role === "customer" && <CustomerDashboardLinks isCollapsed={isCollapsed}/>
+            }
+            {/* vendor routes */}
+            {
+              user?.role === "vendor" && <VendorDashboardLinks isCollapsed={isCollapsed}/>
             }
           </div>
         </div>

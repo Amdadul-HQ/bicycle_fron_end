@@ -5,7 +5,7 @@ import { selectCurrentUser } from "../redux/features/auth/authSlice"
 
 type PrivateRouteProps = {
   children: React.ReactNode
-  allowedRoles: ("admin"| "customer")[]
+  allowedRoles: ("admin"| "customer" | "vendor")[]
 }
 
 export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRoles }) => {
@@ -15,7 +15,7 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, allowedRol
     return <Navigate to="/" replace />
   }
 
-  if (!allowedRoles.includes(user?.role as "admin" | "customer")) {
+  if (!allowedRoles.includes(user?.role as "admin" | "customer" | "vendor")) {
     return <Navigate to="/" replace />
   }
 

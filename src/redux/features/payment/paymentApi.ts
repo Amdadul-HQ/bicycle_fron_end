@@ -24,6 +24,7 @@ const paymentApi = baseApi.injectEndpoints({
                 return {
                   url: "/orders/user/order",
                   method: "GET",
+                  credentials:'include',
                 };
               },
               providesTags: ["products"],

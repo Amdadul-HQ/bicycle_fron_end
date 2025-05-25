@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 export type TUser = {
-    userId:string,
+    id:string,
     role:string,
     iat:number,
     exp:number,
@@ -12,11 +12,13 @@ export type TUser = {
 type TInitialState = {
   user: null | TUser;
   token: null | string;
+  hasStore:boolean
 };
 
 const initialState :TInitialState = {
     user:null,
-    token:null
+    token:null,
+    hasStore:false
 }
 
 
@@ -26,13 +28,15 @@ const authSlice = createSlice({
     initialState,
     reducers:{
         setUser : (state,action) =>{
-            const {user,token} = action.payload;
+            const {user,token,hasStore} = action.payload;
             state.user = user;
             state.token = token
+            state.hasStore = hasStore
         },
         logOut: (state) =>{
             state.user = null;
             state.token = null;
+            state.hasStore = false;
         }
     }
 });

@@ -1,6 +1,6 @@
 import { Button } from './button';
 import { Link } from 'react-router-dom';
-import { BarChart2, ClipboardList, ShoppingBag, Users } from 'lucide-react';
+import { BarChart2, Store, Users } from 'lucide-react';
 
 const AdminDashboardLinks = ({isCollapsed}:{isCollapsed:boolean}) => {
     return (
@@ -24,16 +24,9 @@ const AdminDashboardLinks = ({isCollapsed}:{isCollapsed:boolean}) => {
             <Button
                asChild variant="ghost" className="w-full justify-start"
             >
-                <Link to="/dashboard/products">
-                    <ShoppingBag className="mr-2 h-4 w-4" />
-                    {!isCollapsed && "Products"}
-                </Link>
-            </Button>
-            <Button asChild variant="ghost" className="w-full justify-start"
-            >
-                <Link to="/dashboard/orders">
-                <ClipboardList className="mr-2 h-4 w-4" />
-                {!isCollapsed && "Orders"}
+                <Link to="/dashboard/stores">
+                    <Store className="mr-2 h-4 w-4" />
+                    {!isCollapsed && "Stores"}
                 </Link>
             </Button>
         </div>

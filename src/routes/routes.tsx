@@ -16,6 +16,8 @@ import { PrivateRoute } from "./PrivateRoutes";
 import AllCycles from "../pages/AllCycles";
 import AboutUs from "../pages/AboutUs";
 import { Events } from "../pages/Events";
+import CreateShop from "../features/dashboard/customer/CreateShop";
+import StoreManagement from "../features/dashboard/admin/ShopManagement";
 
 export const router = createBrowserRouter([
     {
@@ -56,7 +58,7 @@ export const router = createBrowserRouter([
     {
         path:'/dashboard',
         element:(
-            <PrivateRoute allowedRoles={["admin","customer"]}>
+            <PrivateRoute allowedRoles={["admin","customer","vendor"]}>
                 <Dashboard/>
             </PrivateRoute>
         ),
@@ -71,24 +73,41 @@ export const router = createBrowserRouter([
                 )
             },
             {
+                path:'stores',
+                element:(
+                    <PrivateRoute allowedRoles={['admin']}>
+                        <StoreManagement/>
+                    </PrivateRoute>
+                )
+            },
+            {
                 path:'users',
                 element:(
                     <PrivateRoute allowedRoles={["admin"]}>
                         <UserManagement/>
                     </PrivateRoute>)
             },
+            // vendero routes
             {
                 path:'products',
                 element:(
-                    <PrivateRoute allowedRoles={["admin"]}>
+                    <PrivateRoute allowedRoles={["vendor"]}>
                         <ProductManagement/>
+                    </PrivateRoute>
+                )
+            },
+            {
+                path:'my-shop',
+                element:(
+                    <PrivateRoute allowedRoles={['customer']}>
+                        <CreateShop/>
                     </PrivateRoute>
                 )
             },
             {
                 path:'orders',
                 element:(
-                    <PrivateRoute allowedRoles={["admin"]}>
+                    <PrivateRoute allowedRoles={["vendor"]}>
                         <OrderManagement/>
                     </PrivateRoute>
                 )
@@ -109,7 +128,15 @@ export const router = createBrowserRouter([
                         <ManageProfile/>
                     </PrivateRoute>
                 )
-            }
+            },
+            {
+                path:'create-shop',
+                element:(
+                    <PrivateRoute allowedRoles={['customer']}>
+                        <CreateShop/>
+                    </PrivateRoute>
+                )
+            },
         ]
     },
 ]) 
