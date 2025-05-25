@@ -9,87 +9,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../..
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "../../../components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../../../components/ui/dropdown-menu"
-import { useGetAllStoresQuery } from "../../../redux/features/admin/storeManagement"
+import { useApproveStoreMutation, useGetAllStoresQuery } from "../../../redux/features/admin/storeManagement"
 import { ApproveModal, RejectModal } from "../../../components/ui/ApprovedReject"
 import { toast } from "sonner"
 
-// Mock data - replace with your actual API call
-const mockStores = [
-  {
-    _id: "1",
-    shopName: "Tech Paradise",
-    shopAddress: "123 Main St, New York, NY 10001",
-    phone: "+1 (555) 123-4567",
-    profileImage: "/placeholder.svg?height=40&width=40",
-    status: "pending",
-    user: {
-      _id: "user1",
-      name: "John Doe",
-      email: "john@example.com",
-    },
-    storeProducts: ["prod1", "prod2"],
-    totalIncome: 15420,
-    createdAt: "2024-01-15T10:30:00Z",
-  },
-  {
-    _id: "2",
-    shopName: "Fashion Hub",
-    shopAddress: "456 Oak Ave, Los Angeles, CA 90210",
-    phone: "+1 (555) 987-6543",
-    profileImage: "/placeholder.svg?height=40&width=40",
-    status: "active",
-    user: {
-      _id: "user2",
-      name: "Jane Smith",
-      email: "jane@example.com",
-    },
-    storeProducts: ["prod3", "prod4", "prod5"],
-    totalIncome: 28750,
-    createdAt: "2024-01-10T14:20:00Z",
-  },
-  {
-    _id: "3",
-    shopName: "Home Essentials",
-    shopAddress: "789 Pine Rd, Chicago, IL 60601",
-    phone: "+1 (555) 456-7890",
-    profileImage: "/placeholder.svg?height=40&width=40",
-    status: "blocked",
-    user: {
-      _id: "user3",
-      name: "Mike Johnson",
-      email: "mike@example.com",
-    },
-    storeProducts: ["prod6"],
-    totalIncome: 5200,
-    createdAt: "2024-01-08T09:15:00Z",
-  },
-  {
-    _id: "4",
-    shopName: "Sports Central",
-    shopAddress: "321 Elm St, Miami, FL 33101",
-    phone: "+1 (555) 321-0987",
-    profileImage: "/placeholder.svg?height=40&width=40",
-    status: "pending",
-    user: {
-      _id: "user4",
-      name: "Sarah Wilson",
-      email: "sarah@example.com",
-    },
-    storeProducts: ["prod7", "prod8"],
-    totalIncome: 0,
-    createdAt: "2024-01-20T16:45:00Z",
-  },
-]
+
 
 export default function StoreManagement() {
   const {isLoading,data} = useGetAllStoresQuery(undefined)
-  const [stores, setStores] = useState(mockStores)
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
   const [approveModalOpen, setApproveModalOpen] = useState(false)
   const [rejectModalOpen, setRejectModalOpen] = useState(false)
   const [selectedStore, setSelectedStore] = useState(null)
-
+  const [approveStore] = useApproveStoreMutation()
   if(isLoading){
     return
   }
@@ -111,7 +44,9 @@ export default function StoreManagement() {
       // Replace with your actual API call
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
 
-      setStores(stores.map((store) => (store._id === storeId ? { ...store, status: "active" } : store)))
+      const store = await approveStore({id:storeId,status:'active'})
+      console.log(store)
+    //   setStores(data?.data?.map((store:any) => (store._id === storeId ? { ...store, status: "active" } : store)))
 
       toast.success("Store Approved")
 
@@ -132,8 +67,9 @@ export default function StoreManagement() {
       // Replace with your actual API call
       await new Promise((resolve) => setTimeout(resolve, 1000)) // Simulate API call
 
-      setStores(stores.map((store) => (store._id === storeId ? { ...store, status: "blocked" } : store)))
-
+      const store = await approveStore({id:storeId,status:'blocked'})
+      console.log(store,'reject')
+    //   setStores(data?.data?.map((store:any) => (store._id === storeId ? { ...store, status: "blocked" } : store)))
       toast.success("Store Rejected")
 
       setRejectModalOpen(false)
@@ -209,28 +145,28 @@ export default function StoreManagement() {
               onClick={() => setStatusFilter("all")}
               size="sm"
             >
-              All ({stores.length})
+              All ({data?.data?.length})
             </Button>
             <Button
               variant={statusFilter === "pending" ? "default" : "outline"}
               onClick={() => setStatusFilter("pending")}
               size="sm"
             >
-              Pending ({stores.filter((s) => s.status === "pending").length})
+              Pending ({data?.data?.filter((s:any) => s.status === "pending").length})
             </Button>
             <Button
               variant={statusFilter === "active" ? "default" : "outline"}
               onClick={() => setStatusFilter("active")}
               size="sm"
             >
-              Active ({stores.filter((s) => s.status === "active").length})
+              Active ({data?.data?.filter((s:any) => s.status === "active").length})
             </Button>
             <Button
               variant={statusFilter === "blocked" ? "default" : "outline"}
               onClick={() => setStatusFilter("blocked")}
               size="sm"
             >
-              Blocked ({stores.filter((s) => s.status === "blocked").length})
+              Blocked ({data?.data?.filter((s:any) => s.status === "blocked").length})
             </Button>
           </div>
         </div>
@@ -392,3 +328,7 @@ export default function StoreManagement() {
     </div>
   )
 }
+function setStores(arg0: any) {
+    throw new Error("Function not implemented.")
+}
+

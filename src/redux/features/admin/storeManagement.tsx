@@ -12,7 +12,7 @@ const storeManagement = baseApi.injectEndpoints({
                 })
             },
             providesTags: ["store"],
-        })
+        }),
     //     addProduct: builder.mutation({
     //         query: (data) => ({
     //           url: "/products/add-bicycle",
@@ -47,16 +47,22 @@ const storeManagement = baseApi.injectEndpoints({
     //     }),
     //     // delete product
     //     // delete product - changed to mutation
-    //     deleteProduct: builder.mutation({
-    //       query: (args) => {
-    //        return( 
-    //         {url: `/products/${args.id}`,
-    //         method: "DELETE",})
-    //         // If you need a body, you can keep it, but if not, remove this
-    //         // body: args.data,
-    //       },
-    //       invalidatesTags:["products"],
-    //     }),
+       approveStore : builder.mutation({
+          query: (args) => {
+              console.log(args,'asdfasdfasdfasdf')
+              return( 
+            {
+            url: `/admin/store/${args.id}`,
+            method: "PATCH",
+            credentials:"include",
+            body:{status:args.status}
+            }
+        )
+            // If you need a body, you can keep it, but if not, remove this
+            // body: args.data,
+          },
+          invalidatesTags:["store"],
+        }),
     //     updateProduct:builder.mutation({
     //       query: (args) => {
             
@@ -113,5 +119,5 @@ const storeManagement = baseApi.injectEndpoints({
     })
 })
 
-export const {useGetAllStoresQuery} = storeManagement 
+export const {useGetAllStoresQuery,useApproveStoreMutation} = storeManagement 
 
