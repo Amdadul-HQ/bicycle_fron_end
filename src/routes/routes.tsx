@@ -19,6 +19,7 @@ import { Events } from "../pages/Events";
 import CreateShop from "../features/dashboard/customer/CreateShop";
 import StoreManagement from "../features/dashboard/admin/ShopManagement";
 import MyShop from "../features/dashboard/vendor/MyShop";
+import { VendorOrder } from "../features/dashboard/vendor/VendorOrder";
 
 export const router = createBrowserRouter([
     {
@@ -109,7 +110,7 @@ export const router = createBrowserRouter([
                 path:'orders',
                 element:(
                     <PrivateRoute allowedRoles={["vendor"]}>
-                        <OrderManagement/>
+                        <VendorOrder/>
                     </PrivateRoute>
                 )
             },

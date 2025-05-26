@@ -8,7 +8,7 @@ interface Product {
   _id: string
   name: string
   price: number
-  images: string[]
+  image: string
   category: string
   stock: number
 }
@@ -44,7 +44,7 @@ export function ProductsTable({ products }: ProductsTableProps) {
             <TableCell>
               <div className="flex items-center space-x-3">
                 <img
-                  src={product.images?.[0] || "/placeholder.svg"}
+                  src={product.image || "/placeholder.svg"}
                   alt={product.name}
                   width={40}
                   height={40}

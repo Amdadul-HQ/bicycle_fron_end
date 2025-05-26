@@ -1,12 +1,13 @@
-import { Badge, Eye } from "lucide-react"
+import { Eye } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table"
 import { Button } from "../ui/button"
+import { Badge } from "../ui/badge"
 
 interface Order {
   _id: string
   orderNumber: string
-  totalAmount: number
-  status: string
+  totalPrice: number
+  status: boolean
   createdAt: string
 }
 
@@ -15,18 +16,12 @@ interface OrdersTableProps {
 }
 
 export function OrdersTable({ orders }: OrdersTableProps) {
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "completed":
+  const getStatusColor = (status: boolean) => {
+    switch (status) {
+      case true:
         return "bg-green-100 text-green-800"
-      case "pending":
+      case false:
         return "bg-yellow-100 text-yellow-800"
-      case "cancelled":
-        return "bg-red-100 text-red-800"
-      case "processing":
-        return "bg-blue-100 text-blue-800"
-      default:
-        return "bg-gray-100 text-gray-800"
     }
   }
 
@@ -50,13 +45,13 @@ export function OrdersTable({ orders }: OrdersTableProps) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {orders.map((order) => (
+        {orders?.map((order) => (
           <TableRow key={order._id}>
-            <TableCell className="font-medium">{order.orderNumber}</TableCell>
+            <TableCell className="font-medium">{order._id}</TableCell>
             <TableCell>{new Date(order.createdAt).toLocaleDateString()}</TableCell>
-            <TableCell>${order.totalAmount?.toFixed(2)}</TableCell>
+            <TableCell>${order?.totalPrice?.toFixed(2)}</TableCell>
             <TableCell>
-              <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+              <Badge className={getStatusColor(order.status)}>{order.status === true ? "Completed" : "Canceled"}</Badge>
             </TableCell>
             <TableCell>
               <Button size="sm" variant="outline">

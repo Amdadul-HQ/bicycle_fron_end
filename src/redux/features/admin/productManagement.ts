@@ -8,6 +8,7 @@ const productManagement = baseApi.injectEndpoints({
               url: "/products/add-bicycle",
               method: "POST",
               body: data,
+              credentials:"include"
             }),
             invalidatesTags: ["products"],
         }),
@@ -24,6 +25,7 @@ const productManagement = baseApi.injectEndpoints({
               url: "/products",
               method: "GET",
               params: params,
+              credentials:"include"
             };
           },
           providesTags: ["products"],
@@ -41,7 +43,9 @@ const productManagement = baseApi.injectEndpoints({
           query: (args) => {
            return( 
             {url: `/products/${args.id}`,
-            method: "DELETE",})
+            method: "DELETE",
+          credentials:"include"
+          })
             // If you need a body, you can keep it, but if not, remove this
             // body: args.data,
           },
@@ -55,6 +59,7 @@ const productManagement = baseApi.injectEndpoints({
               url: `/products/${args.id}`,
               method: "PATCH",
               body: args.data,
+              credentials:"include"
             })
           },
           invalidatesTags: ["products"],
@@ -71,6 +76,7 @@ const productManagement = baseApi.injectEndpoints({
               url: "/orders",
               method: "GET",
               params: params,
+              credentials:"include"
             };
           },
           providesTags: ["products"],
@@ -88,6 +94,7 @@ const productManagement = baseApi.injectEndpoints({
             return {
               url: "/orders/total/revenue",
               method: "GET",
+              credentials:"include"
               // params:params
             };
           },
