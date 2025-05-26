@@ -34,75 +34,75 @@ const navItems = [
       {
         title: "Mountain Bikes",
         items: [
-          { name: "Cross Country", href: "/cycles/mountain/cross-country" },
-          { name: "Trail Bikes", href: "/cycles/mountain/trail" },
-          { name: "Enduro", href: "/cycles/mountain/enduro" },
-          { name: "Downhill", href: "/cycles/mountain/downhill" },
+          { name: "Cross Country", href: "/cycles?category=cross-country" },
+          { name: "Trail Bikes", href: "/cycles?category=trail" },
+          { name: "Enduro", href: "/cycles?category=enduro" },
+          { name: "Downhill", href: "/cycles?category=downhill" },
         ],
       },
       {
         title: "Road Bikes",
         items: [
-          { name: "Racing Bikes", href: "/cycles/road/racing" },
-          { name: "Touring Bikes", href: "/cycles/road/touring" },
-          { name: "Gravel Bikes", href: "/cycles/road/gravel" },
-          { name: "Time Trial", href: "/cycles/road/time-trial" },
+          { name: "Racing Bikes", href: "/cycles?category=racing" },
+          { name: "Touring Bikes", href: "/cycles?category=touring" },
+          { name: "Gravel Bikes", href: "/cycles?category=gravel" },
+          { name: "Time Trial", href: "/cycles?category=time-trial" },
         ],
       },
       {
         title: "Electric Bikes",
         items: [
-          { name: "E-Mountain", href: "/cycles/electric/mountain" },
-          { name: "E-Road", href: "/cycles/electric/road" },
-          { name: "E-Commuter", href: "/cycles/electric/commuter" },
-          { name: "E-Cargo", href: "/cycles/electric/cargo" },
+          { name: "E-Mountain", href: "/cycles?category=mountain" },
+          { name: "E-Road", href: "/cycles?category=road" },
+          { name: "E-Commuter", href: "/cycles?category=commuter" },
+          { name: "E-Cargo", href: "/cycles?category=cargo" },
         ],
       },
       {
         title: "Specialty",
         items: [
-          { name: "BMX", href: "/cycles/specialty/bmx" },
-          { name: "Hybrid", href: "/cycles/specialty/hybrid" },
-          { name: "Kids Bikes", href: "/cycles/specialty/kids" },
-          { name: "Folding Bikes", href: "/cycles/specialty/folding" },
+          { name: "BMX", href: "/cycles?category=bmx" },
+          { name: "Hybrid", href: "/cycles?category=hybrid" },
+          { name: "Kids Bikes", href: "/cycles?category=kids" },
+          { name: "Folding Bikes", href: "/cycles?category=folding" },
         ],
       },
     ],
   },
-  {
-    title: "Accessories",
-    href: "/accessories",
-    hasDropdown: true,
-    categories: [
-      {
-        title: "Safety Gear",
-        items: [
-          { name: "Helmets", href: "/accessories/safety/helmets" },
-          { name: "Lights", href: "/accessories/safety/lights" },
-          { name: "Reflective Gear", href: "/accessories/safety/reflective" },
-          { name: "Locks", href: "/accessories/safety/locks" },
-        ],
-      },
-      {
-        title: "Components",
-        items: [
-          { name: "Wheels & Tires", href: "/accessories/components/wheels" },
-          { name: "Brakes", href: "/accessories/components/brakes" },
-          { name: "Drivetrain", href: "/accessories/components/drivetrain" },
-          { name: "Handlebars", href: "/accessories/components/handlebars" },
-        ],
-      },
-      {
-        title: "Apparel",
-        items: [
-          { name: "Jerseys", href: "/accessories/apparel/jerseys" },
-          { name: "Shorts", href: "/accessories/apparel/shorts" },
-          { name: "Gloves", href: "/accessories/apparel/gloves" },
-          { name: "Shoes", href: "/accessories/apparel/shoes" },
-        ],
-      },
-    ],
-  },
+  // {
+  //   title: "Accessories",
+  //   href: "/accessories",
+  //   hasDropdown: true,
+  //   categories: [
+  //     {
+  //       title: "Safety Gear",
+  //       items: [
+  //         { name: "Helmets", href: "/accessories/safety/helmets" },
+  //         { name: "Lights", href: "/accessories/safety/lights" },
+  //         { name: "Reflective Gear", href: "/accessories/safety/reflective" },
+  //         { name: "Locks", href: "/accessories/safety/locks" },
+  //       ],
+  //     },
+  //     {
+  //       title: "Components",
+  //       items: [
+  //         { name: "Wheels & Tires", href: "/accessories/components/wheels" },
+  //         { name: "Brakes", href: "/accessories/components/brakes" },
+  //         { name: "Drivetrain", href: "/accessories/components/drivetrain" },
+  //         { name: "Handlebars", href: "/accessories/components/handlebars" },
+  //       ],
+  //     },
+  //     {
+  //       title: "Apparel",
+  //       items: [
+  //         { name: "Jerseys", href: "/accessories/apparel/jerseys" },
+  //         { name: "Shorts", href: "/accessories/apparel/shorts" },
+  //         { name: "Gloves", href: "/accessories/apparel/gloves" },
+  //         { name: "Shoes", href: "/accessories/apparel/shoes" },
+  //       ],
+  //     },
+  //   ],
+  // },
   { title: "Events", href: "/events" },
   { title: "About Us", href: "/about" },
 ]
