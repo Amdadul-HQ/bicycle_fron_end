@@ -6,16 +6,18 @@ import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tool
 import { format } from "date-fns"
 import { useGetAllOrdersQuery, useGetRevenueQuery } from "../../../redux/features/admin/productManagement"
 import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card"
+import { useGetAllUserQuery } from "../../../redux/features/admin/userManagement"
 
 export const Analytics: React.FC = () => {
   const { data: orders, isLoading, error } = useGetAllOrdersQuery(undefined)
   const {data:totalRevenue,isFetching}= useGetRevenueQuery(undefined)
+  const {data:totalUser} = useGetAllUserQuery(undefined)
   const analytics = useMemo(() => {
     if (!orders) return null
 
     const totalOrders = orders?.data?.length
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const uniqueUsers = new Set(orders?.data?.map((order:any) => order.email)).size
+    const uniqueUsers = totalUser?.data?.length
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalQuantity = orders?.data?.reduce((sum:number, order:any) => sum + order?.quantity, 0)
     

@@ -73,7 +73,7 @@ const productManagement = baseApi.injectEndpoints({
               });
             }
             return {
-              url: "/orders",
+              url: "/admin/all-order",
               method: "GET",
               params: params,
               credentials:"include"

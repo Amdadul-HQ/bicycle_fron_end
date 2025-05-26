@@ -12,7 +12,7 @@ const userManagement = baseApi.injectEndpoints({
                 });
               }
               return {
-                url: "/users",
+                url: "/admin",
                 method: "GET",
                 params: params,
               };
@@ -29,7 +29,7 @@ const userManagement = baseApi.injectEndpoints({
         blockUser: builder.mutation({
             query: (args) => {
              return( 
-              {url: `/users/${args.id}`,
+              {url: `/admin/${args.id}`,
               method: "DELETE",})
             },
             invalidatesTags:["users"],
