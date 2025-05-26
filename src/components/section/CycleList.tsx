@@ -1,4 +1,3 @@
-"use client"
 
 import type React from "react"
 import { useState, useMemo } from "react"
@@ -40,15 +39,12 @@ const FilterSidebar: React.FC<{
   onClearFilters: () => void
   activeFiltersCount: number
   availableCategories: string[]
-  availableBrands: string[]
   maxPrice: number
 }> = ({
   searchTerm,
   setSearchTerm,
   selectedCategories,
   setSelectedCategories,
-  selectedBrands,
-  setSelectedBrands,
   priceRange,
   setPriceRange,
   showInStockOnly,
@@ -56,7 +52,6 @@ const FilterSidebar: React.FC<{
   onClearFilters,
   activeFiltersCount,
   availableCategories,
-  availableBrands,
   maxPrice,
 }) => {
   const handleCategoryChange = (category: string, checked: boolean) => {
@@ -64,14 +59,6 @@ const FilterSidebar: React.FC<{
       setSelectedCategories([...selectedCategories, category])
     } else {
       setSelectedCategories(selectedCategories.filter((c) => c !== category))
-    }
-  }
-
-  const handleBrandChange = (brand: string, checked: boolean) => {
-    if (checked) {
-      setSelectedBrands([...selectedBrands, brand])
-    } else {
-      setSelectedBrands(selectedBrands.filter((b) => b !== brand))
     }
   }
 
@@ -131,32 +118,7 @@ const FilterSidebar: React.FC<{
       )}
 
       {/* Brands */}
-      {availableBrands.length > 0 && (
-        <>
-          <Collapsible defaultOpen className="mb-6">
-            <CollapsibleTrigger className="flex items-center justify-between w-full p-0">
-              <Label className="text-sm font-medium">Brands</Label>
-              <ChevronDown className="h-4 w-4" />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="mt-3 space-y-3">
-              {availableBrands.map((brand) => (
-                <div key={brand} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`brand-${brand}`}
-                    checked={selectedBrands.includes(brand)}
-                    onCheckedChange={(checked) => handleBrandChange(brand, checked as boolean)}
-                  />
-                  <Label htmlFor={`brand-${brand}`} className="text-sm">
-                    {brand}
-                  </Label>
-                </div>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
-          <Separator className="mb-6" />
-        </>
-      )}
-
+      
       {/* Price Range */}
       {maxPrice > 0 && (
         <>
@@ -252,7 +214,7 @@ export const CycleList: React.FC = () => {
   }
 
   // Extract unique categories and brands from data
-  const { availableCategories, availableBrands, maxPrice } = useMemo(() => {
+  const { availableCategories, maxPrice } = useMemo(() => {
     const products = data?.data || []
     const categories = [...new Set(BICYCLE_CATEGORIES.map((category) => category))].filter(Boolean)
     const brands = [...new Set(products.map((product: IProduct) => product.brand))].filter(Boolean)
@@ -398,7 +360,6 @@ if (error) {
       onClearFilters={clearAllFilters}
       activeFiltersCount={activeFiltersCount}
       availableCategories={availableCategories}
-      availableBrands={availableBrands}
       maxPrice={maxPrice}
     />
   )
@@ -536,7 +497,7 @@ if (error) {
                     key={product._id}
                     //@ts-expect-error ignoring this error
                     product={product}
-                    onViewDetails={handleViewDetailsClick}
+                    onViewDetails={()=>handleViewDetailsClick(product)}
                   />
                 ))}
               </div>
