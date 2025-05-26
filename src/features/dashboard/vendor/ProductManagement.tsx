@@ -18,12 +18,25 @@ export interface IProduct {
   image: string
   brand: string
   price: number
-  category: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric"
+  category: BicycleCategory
   description: string
   quantity: number
   inStock: boolean
   isDeleted: boolean
 }
+type BicycleCategory =
+  | "Mountain"
+  | "Road"
+  | "Hybrid"
+  | "Gravel"
+  | "Electric"
+  | "Cruiser"
+  | "BMX"
+  | "Folding"
+  | "City"
+  | "Touring"
+  | "Fat Tire"
+  | "Fixie";
 
 export const ProductManagement: React.FC = () => {
   const [isAddProductDialogOpen, setIsAddProductDialogOpen] = useState(false)

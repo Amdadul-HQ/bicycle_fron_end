@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type React from "react"
 import { Controller, useForm } from "react-hook-form"
 import * as z from "zod"
@@ -15,11 +16,26 @@ const formSchema = z.object({
   name: z.string().min(2).max(100),
   brand: z.string().min(2).max(100),
   price: z.number().positive(),
-  category: z.enum(["Mountain", "Road", "Hybrid", "BMX", "Electric"]),
+  category: z.enum([
+  "Mountain",
+  "Road",
+  "Hybrid",
+  "Gravel",
+  "Electric",
+  "Cruiser",
+  "BMX",
+  "Folding",
+  "City",
+  "Touring",
+  "Fat Tire",
+  "Fixie",
+]),
   description: z.string().min(10).max(1000),
   quantity: z.number().int().nonnegative(),
   inStock: z.boolean(),
 })
+
+
 
 interface UpdateProductFormProps {
     product: IProduct
