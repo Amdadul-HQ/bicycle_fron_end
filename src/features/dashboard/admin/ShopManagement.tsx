@@ -328,7 +328,5 @@ export default function StoreManagement() {
     </div>
   )
 }
-function setStores(arg0: any) {
-    throw new Error("Function not implemented.")
-}
+
 
