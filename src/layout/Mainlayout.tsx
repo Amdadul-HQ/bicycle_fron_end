@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Navbar } from "../components/Navbar";
+import { MegaNavbar  } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 
 const Mainlayout = () => {
@@ -7,7 +7,7 @@ const Mainlayout = () => {
         <>
         {/* navbar */}
         <header>
-            <Navbar/>
+            <MegaNavbar/>
         </header>
 
         {/* content */}

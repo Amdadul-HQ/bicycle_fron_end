@@ -3,12 +3,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../../../components/ui/dialog"
 import { Button } from "../../../components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/ui/select"
-import { useGetAllOrdersQuery } from "../../../redux/features/admin/productManagement"
+import { useGetVendorOrdersQuery } from "../../../redux/features/vendor/vendorApi"
 
 interface Order {
   _id: string
   email: string
-  product: string
+  product: Record<string,unknown>
   quantity: number
   totalPrice: number
   createdAt: string
@@ -17,7 +17,7 @@ interface Order {
 }
 
 export const OrderManagement: React.FC = () => {
-  const { data: orders, isLoading, error } = useGetAllOrdersQuery(undefined)
+  const { data: orders, isLoading, error } = useGetVendorOrdersQuery(undefined)
 
   const updateOrderStatus = (id: string, status: string) => {
     // Implement the logic to update order status
@@ -26,6 +26,8 @@ export const OrderManagement: React.FC = () => {
 
   if (isLoading) return <div>Loading...</div>
   if (error) return <div>Error loading orders</div>
+
+  console.log(orders)
 
   return (
     <div className="space-y-4">
@@ -46,7 +48,7 @@ export const OrderManagement: React.FC = () => {
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
               <TableCell>{order.email}</TableCell>
-              <TableCell>{order.product}</TableCell>
+              {/* <TableCell>{order.product._id}</TableCell> */}
               <TableCell>{order.quantity}</TableCell>
               <TableCell>${order.totalPrice}</TableCell>
               <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>

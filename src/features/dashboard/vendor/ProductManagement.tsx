@@ -5,11 +5,12 @@ import { Button } from "../../../components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../../../components/ui/table"
 import { Input } from "../../../components/ui/input"
 import { AddProductForm } from "../../../components/form/AddProductForm"
-import { useGetAllProductsQuery,  useDeleteProductMutation } from "../../../redux/features/admin/productManagement"
+import { useDeleteProductMutation } from "../../../redux/features/admin/productManagement"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "../../../components/ui/alert-dialog"
 import { UpdateProductForm } from "../../../components/form/UpdateProductForm"
 import { ProductDetails } from "../../../components/form/ProductDetail"
 import { toast } from "sonner"
+import { useGetVendorProductQuery } from "../../../redux/features/vendor/vendorApi"
 
 export interface IProduct {
   _id: string
@@ -45,7 +46,7 @@ export const ProductManagement: React.FC = () => {
   })
   const [searchTerm, setSearchTerm] = useState("")
 
-  const { data: products } = useGetAllProductsQuery(searchTerm)
+  const { data: products } = useGetVendorProductQuery(searchTerm)
   const [deleteProduct] = useDeleteProductMutation()
 
   const handleUpdateClick = (product: IProduct) => {
@@ -82,6 +83,8 @@ export const ProductManagement: React.FC = () => {
         product.category.toLowerCase().includes(searchTerm.toLowerCase()),
     )
   }, [products?.data, searchTerm])
+
+  console.log(products)
 
   return (
     <div className="space-y-4">

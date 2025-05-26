@@ -3,6 +3,13 @@ import { baseApi } from "../../api/baseApi";
 
 const productManagement = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getProductDetails :builder.query({
+          query: (args) => {
+           return({ 
+            url: `/products/${args.id}`,
+            method: "GET",
+          })}
+        }),
         addProduct: builder.mutation({
             query: (data) => ({
               url: "/products/add-bicycle",
@@ -25,7 +32,7 @@ const productManagement = baseApi.injectEndpoints({
               url: "/products",
               method: "GET",
               params: params,
-              credentials:"include"
+              // credentials:"include"
             };
           },
           providesTags: ["products"],
@@ -79,7 +86,7 @@ const productManagement = baseApi.injectEndpoints({
               credentials:"include"
             };
           },
-          providesTags: ["products"],
+          providesTags: ["orders"],
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           transformResponse: (response: TResponseRedux<any>) => {
             return {
@@ -105,10 +112,9 @@ const productManagement = baseApi.injectEndpoints({
               meta: response.meta,
             };
           },
-        })
-
+        }),
     })
 })
 
-export const {useAddProductMutation,useGetAllProductsQuery,useGetRevenueQuery,useDeleteProductMutation,useUpdateProductMutation,useGetAllOrdersQuery} = productManagement 
+export const {useGetProductDetailsQuery,useAddProductMutation,useGetAllProductsQuery,useGetRevenueQuery,useDeleteProductMutation,useUpdateProductMutation,useGetAllOrdersQuery} = productManagement 
 

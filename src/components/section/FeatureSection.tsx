@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useGetAllProductsQuery } from "../../redux/features/admin/productManagement";
-import { IProduct } from "../../features/dashboard/admin/ProductManagement";
+import { IProduct } from "../../features/dashboard/vendor/ProductManagement";
 import { Dialog, DialogContent, DialogTitle,DialogHeader } from "../ui/dialog";
 import { CustomerProductDetails } from "../form/CustomerProductDetail";
 

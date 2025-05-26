@@ -9,7 +9,6 @@ import { Button } from "../ui/button"
 import { ShoppingCart, Plus, Minus } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { loadStripe } from "@stripe/stripe-js"
-import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 import { Input } from "../ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Checkbox } from "../ui/checkbox"
@@ -19,6 +18,7 @@ import { useLoginMutation } from "../../redux/features/auth/authApi"
 import { verifyToken } from "../../utils/function/verifyToken"
 import { selectCurrentUser, setUser, TUser } from "../../redux/features/auth/authSlice"
 import { useCreatePaymentIntentMutation, usePlaceOrderMutation } from "../../redux/features/payment/paymentApi"
+import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js"
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY)
 
 interface ProductDetailsProps {

@@ -11,13 +11,43 @@ import { Controller, useForm } from "react-hook-form"
 import { useAddProductMutation } from "../../redux/features/admin/productManagement"
 import { toast } from "sonner"
 
+
+type BicycleCategory =
+  | "Mountain"
+  | "Road"
+  | "Hybrid"
+  | "Gravel"
+  | "Electric"
+  | "Cruiser"
+  | "BMX"
+  | "Folding"
+  | "City"
+  | "Touring"
+  | "Fat Tire"
+  | "Fixie";
+
+
+  export const BICYCLE_CATEGORIES: BicycleCategory[] = [
+  "Mountain",
+  "Road",
+  "Hybrid",
+  "Gravel",
+  "Electric",
+  "Cruiser",
+  "BMX",
+  "Folding",
+  "City",
+  "Touring",
+  "Fat Tire",
+  "Fixie",
+];
 interface IProduct {
   _id:string
   name: string
   image: string
   brand: string
   price: number
-  category: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric"
+  category:BicycleCategory
   description: string
   quantity: number
   inStock: boolean
@@ -227,11 +257,10 @@ export const AddProductForm = ({ onSubmit }:{ onSubmit:  Function }) => {
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Mountain">Mountain</SelectItem>
-                <SelectItem value="Road">Road</SelectItem>
-                <SelectItem value="Hybrid">Hybrid</SelectItem>
-                <SelectItem value="BMX">BMX</SelectItem>
-                <SelectItem value="Electric">Electric</SelectItem>
+                {
+                  BICYCLE_CATEGORIES.map(category => <SelectItem key={category} value={category}>{category}</SelectItem>)
+                }
+                
               </SelectContent>
             </Select>
           )}

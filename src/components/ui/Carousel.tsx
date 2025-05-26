@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { useGetAllProductsQuery } from "../../redux/features/admin/productManagement"
 import { Button } from "../../components/ui/button"
-import { IProduct } from "../../features/dashboard/admin/ProductManagement"
+import { IProduct } from "../../features/dashboard/vendor/ProductManagement"
 import { Link } from "react-router-dom"
 
 const Carousel = () => {

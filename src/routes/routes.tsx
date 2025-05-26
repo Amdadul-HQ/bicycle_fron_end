@@ -6,8 +6,7 @@ import { LoginPage } from "../pages/Loging";
 import { Dashboard } from "../layout/Dashboard";
 import { Analytics } from "../features/dashboard/admin/Analytics";
 import { UserManagement } from "../features/dashboard/admin/UserManagement";
-import { ProductManagement } from "../features/dashboard/admin/ProductManagement";
-import { OrderManagement } from "../features/dashboard/admin/OrderManagement";
+import { ProductManagement } from "../features/dashboard/vendor/ProductManagement";
 import { ViewOrders } from "../features/dashboard/customer/ViewOrders";
 import { ManageProfile } from "../features/dashboard/customer/ManageProfile";
 import { UnauthorizedPage } from "../pages/UnauthorizedPage";
@@ -20,6 +19,7 @@ import CreateShop from "../features/dashboard/customer/CreateShop";
 import StoreManagement from "../features/dashboard/admin/ShopManagement";
 import MyShop from "../features/dashboard/vendor/MyShop";
 import { VendorOrder } from "../features/dashboard/vendor/VendorOrder";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
 
 export const router = createBrowserRouter([
     {
@@ -42,6 +42,10 @@ export const router = createBrowserRouter([
             {
                 path:'/event',
                 element:<Events/>
+            },
+            {
+                path:'cycles/:id',
+                element:<ProductDetailsPage/>
             }
         ],
     },

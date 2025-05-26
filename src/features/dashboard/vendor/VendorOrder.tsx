@@ -7,9 +7,9 @@ import { useGetVendorOrdersQuery } from "../../../redux/features/vendor/vendorAp
 
 interface Order {
   _id: string
-  email: string
-  product: string
+  product: Record<string,string>
   quantity: number
+  user:Record<string,string>
   totalPrice: number
   createdAt: string
   updatedAt: string
@@ -34,7 +34,7 @@ export const VendorOrder: React.FC = () => {
           <TableRow>
             <TableHead>Order ID</TableHead>
             <TableHead>Customer Email</TableHead>
-            <TableHead>Product</TableHead>
+            <TableHead>Product Name</TableHead>
             <TableHead>Quantity</TableHead>
             <TableHead>Total Price</TableHead>
             <TableHead>Created At</TableHead>
@@ -45,8 +45,8 @@ export const VendorOrder: React.FC = () => {
           {orders?.data?.map((order: Order) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
-              <TableCell>{order.email}</TableCell>
-              <TableCell>{order.product}</TableCell>
+              <TableCell>{order.user.email}</TableCell>
+              <TableCell>{order.product.name}</TableCell>
               <TableCell>{order.quantity}</TableCell>
               <TableCell>${order.totalPrice}</TableCell>
               <TableCell>{new Date(order.createdAt).toLocaleString()}</TableCell>
