@@ -103,7 +103,7 @@ const navItems = [
   //     },
   //   ],
   // },
-  { title: "Events", href: "/events" },
+  { title: "Events", href: "/event" },
   { title: "About Us", href: "/about" },
 ]
 
