@@ -18,6 +18,7 @@ import AboutUs from "../pages/AboutUs";
 import { Events } from "../pages/Events";
 import CreateShop from "../features/dashboard/customer/CreateShop";
 import StoreManagement from "../features/dashboard/admin/ShopManagement";
+import MyShop from "../features/dashboard/vendor/MyShop";
 
 export const router = createBrowserRouter([
     {
@@ -99,8 +100,8 @@ export const router = createBrowserRouter([
             {
                 path:'my-shop',
                 element:(
-                    <PrivateRoute allowedRoles={['customer']}>
-                        <CreateShop/>
+                    <PrivateRoute allowedRoles={['vendor']}>
+                        <MyShop/>
                     </PrivateRoute>
                 )
             },
@@ -124,7 +125,7 @@ export const router = createBrowserRouter([
             {
                 path:'profile',
                 element:(
-                    <PrivateRoute allowedRoles={["customer"]}>
+                    <PrivateRoute allowedRoles={["customer","vendor"]}>
                         <ManageProfile/>
                     </PrivateRoute>
                 )

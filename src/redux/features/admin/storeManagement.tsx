@@ -49,7 +49,6 @@ const storeManagement = baseApi.injectEndpoints({
     //     // delete product - changed to mutation
        approveStore : builder.mutation({
           query: (args) => {
-              console.log(args,'asdfasdfasdfasdf')
               return( 
             {
             url: `/admin/store/${args.id}`,

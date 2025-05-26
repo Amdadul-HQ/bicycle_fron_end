@@ -13,7 +13,7 @@ const VendorDashboardLinks = ({isCollapsed}:{isCollapsed:boolean}) => {
               </Link>
             </Button>
             <Button asChild variant="ghost" className="w-full justify-start">
-              <Link to="/dashboard/all-orders">
+              <Link to="/dashboard/orders">
                 <ShoppingBag className="mr-2 h-4 w-4" />
                 {!isCollapsed && "Orders"}
               </Link>
