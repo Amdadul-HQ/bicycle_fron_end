@@ -27,7 +27,7 @@ const paymentApi = baseApi.injectEndpoints({
                   credentials:'include',
                 };
               },
-              providesTags: ["products"],
+              providesTags: ["orders"],
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               transformResponse: (response: TResponseRedux<any>) => {
                 return {
