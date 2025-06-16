@@ -119,7 +119,7 @@ export default function ProductDetailsPage() {
       : ["/placeholder.svg?height=600&width=600"]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background max-w-7xl mx-auto">
       {/* Breadcrumb */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-3">

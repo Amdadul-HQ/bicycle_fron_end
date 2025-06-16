@@ -19,6 +19,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/colla
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { Separator } from "../ui/separator"
 import { BICYCLE_CATEGORIES } from "../form/AddProductForm"
+import { useNavigate } from "react-router-dom"
 
 const ITEMS_PER_PAGE = 8
 
@@ -192,7 +193,8 @@ export const CycleList: React.FC = () => {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000])
   const [showInStockOnly, setShowInStockOnly] = useState(false)
   const [isViewDetailsDialogOpen, setIsViewDetailsDialogOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<IProduct>({
+  const navigate = useNavigate()
+  const [selectedProduct] = useState<IProduct>({
     _id: "",
     name: "",
     image: "",
@@ -208,9 +210,9 @@ export const CycleList: React.FC = () => {
   // RTK Query
   const { data, isLoading, error } = useGetAllProductsQuery(undefined)
 
-  const handleViewDetailsClick = (product: IProduct) => {
-    setSelectedProduct(product)
-    setIsViewDetailsDialogOpen(true)
+  const handleProductClick = (productId: string) => {
+    // Navigate to product page
+    navigate(`/cycles/${productId}`)
   }
 
   // Extract unique categories and brands from data
@@ -497,7 +499,7 @@ if (error) {
                     key={product._id}
                     //@ts-expect-error ignoring this error
                     product={product}
-                    onViewDetails={()=>handleViewDetailsClick(product)}
+                    onViewDetails={()=>handleProductClick(product._id)}
                   />
                 ))}
               </div>

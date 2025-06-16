@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { useGetAllProductsQuery } from "../../redux/features/admin/productManagement";
 import { IProduct } from "../../features/dashboard/vendor/ProductManagement";
@@ -13,7 +13,13 @@ const FeatureSection = () => {
     const [hoveredBikeId, setHoveredBikeId] = useState<number | null>(null)
     const { data, isLoading, error, isError } = useGetAllProductsQuery(undefined)
     const [isViewDetailsDialogOpen, setIsViewDetailsDialogOpen] = useState(false)
-    const [selectedProduct, setSelectedProduct] = useState<IProduct>({
+    const navigate = useNavigate()
+    const handleProductClick = (productId: string) => {
+    // setShowSearchResults(false)
+    // Navigate to product page
+    navigate(`/cycles/${productId}`)
+  }
+    const [selectedProduct] = useState<IProduct>({
         _id: "",
       name: "",
       image: "",
@@ -25,10 +31,7 @@ const FeatureSection = () => {
       inStock: true,
       isDeleted: false
       })
-    const handleViewDetailsClick = (product: IProduct) => {
-      setSelectedProduct(product)
-      setIsViewDetailsDialogOpen(true)
-    }
+
     if (isLoading) {
       return <div className="w-full h-[400px] flex items-center justify-center">Loading...</div>
     }
@@ -74,7 +77,7 @@ const FeatureSection = () => {
             >
               <h3 className="text-white text-xl font-semibold mb-2">{bike.name}</h3>
               <p className="text-white text-lg mb-4">${bike.price}</p>
-              <Button onClick={()=>handleViewDetailsClick(bike)} variant="secondary">View Details</Button>
+              <Button onClick={()=>handleProductClick(bike._id)} variant="secondary">View Details</Button>
             </div>
           </div>
         ))}
