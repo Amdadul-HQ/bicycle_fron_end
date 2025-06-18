@@ -1,11 +1,11 @@
 # Bicycle Store Application
 
-## Project Overview & Objective
+## Project Overview & Objective.
 The Bicycle Store application is designed to provide a seamless shopping experience for customers while enabling admins to manage products and orders efficiently. This project ensures secure authentication, a user-friendly interface, and responsive design.
 
 ## Features
 
-### 1. User Registration & Authentication (Role-Based)
+### 1. User Registration & Authentication (Role-Based).
 - Secure registration and login.
 - Users register with name, email, and password (default role: Customer).
 - Admin roles can be updated manually.
